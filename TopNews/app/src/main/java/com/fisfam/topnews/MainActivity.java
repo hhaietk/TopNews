@@ -1,15 +1,10 @@
 package com.fisfam.topnews;
 
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -24,15 +19,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fisfam.topnews.fragment.HomeFragment;
 import com.fisfam.topnews.fragment.SavedFragment;
 import com.fisfam.topnews.fragment.TopicFragment;
-import com.fisfam.topnews.pojo.Articles;
-import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.utils.UiTools;
 
 import org.jetbrains.annotations.NotNull;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,12 +39,7 @@ public class MainActivity extends AppCompatActivity {
         initToolbar();
         loadFragment(new HomeFragment());
 
-        //TODO: listen to network
-
-        //TODO: RTL layout
-
         //TODO: check app version
-
         //TODO: get Database for notification
     }
 
@@ -121,29 +105,21 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
 
         mActionBar = getSupportActionBar();
+        if (mActionBar == null) {
+            Log.e(TAG, "initToolbar: mActionBar = null");
+            return;
+        }
         mActionBar.setTitle(R.string.app_name);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
-        /*try {
+/*        try {
             Drawable drawable = mToolbar.getOverflowIcon();
             drawable.mutate();
             drawable.setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
         } catch (Exception e) {
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Window window = this.getWindow();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.setStatusBarColor(this.getResources().getColor(R.color.colorBackground));
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            View view = this.findViewById(android.R.id.content);
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
         }*/
+
+        UiTools.setSmartSystemBar(this);
     }
 
     private void loadFragment(final Fragment fragment) {

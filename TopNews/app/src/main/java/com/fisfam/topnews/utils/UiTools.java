@@ -5,11 +5,17 @@ import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+
+import androidx.annotation.ColorRes;
 
 import com.bumptech.glide.Glide;
 import com.fisfam.topnews.R;
@@ -52,5 +58,37 @@ public class UiTools {
         } catch (Exception e) {
             Log.e(TAG, "displayImageThumb: exception" + e.getMessage());
         }
+    }
+
+    public static void setSmartSystemBar(Activity act) {
+        if(isDarkTheme(act)){
+            setSystemBarColor(act, R.color.colorBackground);
+        } else {
+            setSystemBarColor(act, R.color.colorBackground);
+            setSystemBarLight(act);
+        }
+    }
+
+    public static void setSystemBarColor(Activity act, @ColorRes int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = act.getWindow();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.setStatusBarColor(act.getResources().getColor(color));
+        }
+    }
+
+    public static void setSystemBarLight(Activity act) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            View view = act.findViewById(android.R.id.content);
+            int flags = view.getSystemUiVisibility();
+            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            view.setSystemUiVisibility(flags);
+        }
+    }
+
+    private static boolean isDarkTheme(Context context){
+        int night_mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return night_mode == Configuration.UI_MODE_NIGHT_YES;
     }
 }
