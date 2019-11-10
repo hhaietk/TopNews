@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fisfam.topnews.utils.UiTools;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -15,6 +17,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        UiTools.setSmartSystemBar(this);
         startMainActivityDelay();
     }
 
