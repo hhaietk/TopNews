@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -35,8 +36,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mDrawer = findViewById(R.id.drawer);
         initToolbar();
+        initNavigationDrawer();
         loadFragment(new HomeFragment());
 
         //TODO: check app version
@@ -120,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
         }*/
 
         UiTools.setSmartSystemBar(this);
+    }
+
+    private void initNavigationDrawer() {
+        mDrawer = findViewById(R.id.drawer);
+        TextView settings = findViewById(R.id.settings);
+
+        settings.setOnClickListener(v -> SettingsActivity.open(this));
     }
 
     private void loadFragment(final Fragment fragment) {

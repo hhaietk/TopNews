@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment {
         NewsService newsService =
                 NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
         mCallNews = newsService.getTopHeadlines(
-                "gb", "technology", null, null, 10, 1);
+                "gb", null, null, null, 100, 0);
 
         //TODO: move this request out of UI Thread
         mCallNews.enqueue(new Callback<News>() {
@@ -122,7 +122,7 @@ public class HomeFragment extends Fragment {
                     return;
                 }
 
-                mHomeAdapter.addData(new Section(getString(R.string.section_topics)));
+                mHomeAdapter.addData(new Section(getString(R.string.section_featured)));
                 for (final Articles articles : news.getArticles()) {
                     mHomeAdapter.addData(articles);
                 }
