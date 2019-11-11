@@ -126,7 +126,7 @@
     <!--ActivitySettings string data -->
     <string name="title_activity_settings">Settings</string>
     <string name="app_version">Build Version</string>
-    <string name="developer_email">dev.dream.space@gmail.com</string>
+    <string name="developer_email">hhaietk@gmail.com</string>
     <string name="pref_title_contact_us">Contact Us</string>
     <string name="copyright">Copyright © 2019 Dream Space. All right reserved</string>
     <string name="setting_group_profile">Profile</string>
