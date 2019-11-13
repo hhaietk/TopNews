@@ -1,18 +1,17 @@
 package com.fisfam.topnews.adapter;
 
-import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.Section;
