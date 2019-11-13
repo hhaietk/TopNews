@@ -10,17 +10,21 @@ import android.view.ViewGroup;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
+import com.fisfam.topnews.pojo.Category;
 import com.fisfam.topnews.pojo.Section;
 import com.fisfam.topnews.pojo.TopicList;
 import com.fisfam.topnews.utils.UiTools;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
@@ -31,6 +35,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_TOPIC = 200;
     private static final int VIEW_TYPE_SECTION = 300;
     private static final int VIEW_TYPE_PROGRESS = 400;
+    public static final ArrayList<Category> CATEGORY_LIST = new ArrayList<>(Arrays.asList(
+            new Category(R.drawable.avatar_placeholder, "Business"),
+            new Category(R.drawable.avatar_placeholder, "Entertainment"),
+            new Category(R.drawable.avatar_placeholder, "Health"),
+            new Category(R.drawable.avatar_placeholder, "Science"),
+            new Category(R.drawable.avatar_placeholder, "Sport"),
+            new Category(R.drawable.avatar_placeholder, "Technology")
+    ));
 
     private List mItems = new ArrayList<>();
     private OnLoadMoreListener mOnLoadMoreListener;
@@ -40,6 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public HomeAdapter(final Context context, final RecyclerView recyclerView) {
         super();
+        mItems.add(0, CATEGORY_LIST);
         mContext = new WeakReference<>(context).get();
         initLastItemDetector(recyclerView);
     }
@@ -90,6 +103,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             Section section = (Section) item;
             ItemSectionViewHolder vh = (ItemSectionViewHolder) holder;
             vh.title.setText(section.getTitle());
+        } else if (holder instanceof ItemTopicViewHolder) {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            ItemTopicViewHolder vh = (ItemTopicViewHolder) holder;
+            vh.recyclerView.setLayoutManager(layoutManager);
+            vh.recyclerView.setHasFixedSize(true);
+            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST);
+            vh.recyclerView.setAdapter(categoryAdapter);
         }
     }
 
@@ -101,7 +121,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             return VIEW_TYPE_ARTICLES;
         }
 
-        if (o instanceof TopicList) {
+        if (o.equals(CATEGORY_LIST)) {
             return VIEW_TYPE_TOPIC;
         }
 
@@ -141,12 +161,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public static class ItemTopicViewHolder extends RecyclerView.ViewHolder {
-        private TextView title;
         private RecyclerView recyclerView;
 
         public ItemTopicViewHolder(@NonNull View v) {
             super(v);
-            title = v.findViewById(R.id.topic_title);
             recyclerView = v.findViewById(R.id.topic_recycler_view);
         }
     }
@@ -160,14 +178,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public void addData(final Object o) {
-        mItems.add(o);
+    public void addData(final Object object) {
+        mItems.add(object);
         int positionStart = getItemCount();
         notifyItemInserted(positionStart);
     }
 
     public void resetData() {
         mItems.clear();
+        mItems.add(0, CATEGORY_LIST); //to keep the RecyclerView for categories after refresh
         notifyDataSetChanged();
     }
 

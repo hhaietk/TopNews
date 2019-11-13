@@ -168,10 +168,12 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(show));
         if (show) {
             mShimmerFrameLayout.setVisibility(View.VISIBLE);
+            mHomeRecyclerView.setVisibility(View.INVISIBLE);
             mShimmerFrameLayout.startShimmer();
             return;
         }
         mShimmerFrameLayout.setVisibility(View.INVISIBLE);
+        mHomeRecyclerView.setVisibility(View.VISIBLE);
         mShimmerFrameLayout.stopShimmer();
     }
 }
