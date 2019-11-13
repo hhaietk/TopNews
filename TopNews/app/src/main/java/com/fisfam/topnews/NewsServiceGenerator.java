@@ -24,8 +24,6 @@ public class NewsServiceGenerator {
     private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
 
     public static <S> S createService(Class<S> serviceClass, final String apiKey) {
-        Log.d(TAG, "createService() called with serviceClass =[" + serviceClass.getSimpleName()
-        + "] apiKey =[" + apiKey + "]");
 
         if (!httpClient.interceptors().contains(logging)) {
             logging.level(HttpLoggingInterceptor.Level.BASIC);
