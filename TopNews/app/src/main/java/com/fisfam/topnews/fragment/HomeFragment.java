@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.fisfam.topnews.ArticlesDetailsActivity;
 import com.fisfam.topnews.NewsService;
 import com.fisfam.topnews.NewsServiceGenerator;
 import com.fisfam.topnews.R;
@@ -87,7 +88,7 @@ public class HomeFragment extends Fragment {
         });
 
         mHomeAdapter.setOnItemClickListener((view, articles, position) -> {
-            //TODO: navigate to articles details activity
+            ArticlesDetailsActivity.open(getActivity(), articles);
         });
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {

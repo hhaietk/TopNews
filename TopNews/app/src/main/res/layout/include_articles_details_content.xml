@@ -37,17 +37,6 @@
                 android:textColor="@color/colorTextAction"
                 android:textStyle="bold" />
 
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/topic_flex_box"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginTop="@dimen/spacing_middle"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:layout_marginBottom="@dimen/spacing_large"
-                app:flexWrap="wrap"
-                app:justifyContent="flex_start" />
-
         </LinearLayout>
 
         <com.balysv.materialripple.MaterialRippleLayout
@@ -56,41 +45,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/overlay_dark_10">
+                android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/image"
+                    android:id="@+id/image_articles_details"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="centerCrop"
                     android:visibility="visible" />
 
-                <ImageView
-                    android:id="@+id/img_type"
-                    android:layout_width="@dimen/spacing_xxxlarge"
-                    android:layout_height="@dimen/spacing_xxxlarge"
-                    android:layout_centerInParent="true"
-                    app:srcCompat="@drawable/ic_type_video_large" />
+                <TextView
+                    android:id="@+id/content_articles_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Bei einer dieser Fragen danebenzuliegen, ist sicher keine Schande. Und doch zeigt sich hier ein tiefer liegendes Problem: Studien zeigen, dass die allermeisten Menschen ein falsches Bild vom Zustand der Welt haben "
+                    android:layout_marginLeft="@dimen/spacing_large"
+                    android:layout_marginRight="@dimen/spacing_large"
+                    android:layout_marginTop="@dimen/spacing_middle"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
-            </RelativeLayout>
+            </LinearLayout>
 
         </com.balysv.materialripple.MaterialRippleLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <WebView
-                android:id="@+id/web_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/spacing_xmedium" />
-
-        </LinearLayout>
 
         <View
             android:layout_width="0dp"
