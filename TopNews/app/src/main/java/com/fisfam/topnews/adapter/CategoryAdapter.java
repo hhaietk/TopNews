@@ -37,7 +37,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v;
         //Condition to choose item_category layout,either for the RV in HomeFragment, or for the RV in TopicFragment
-        if (parent.getId() == R.id.category_recycler_view) {
+        if (parent.getId() == R.id.category_rv_for_home_fragment) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_for_homefragment, parent, false);
         } else {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category_for_topicfragment,parent,false);

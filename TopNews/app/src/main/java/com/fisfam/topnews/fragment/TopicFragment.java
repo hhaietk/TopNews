@@ -15,10 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.CategoryAdapter;
-import com.fisfam.topnews.adapter.HomeAdapter;
-import com.fisfam.topnews.pojo.Category;
-
-import java.util.ArrayList;
 
 import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
@@ -69,7 +65,7 @@ public class TopicFragment extends Fragment {
     private void initUiComponents() {
         mShimmerFrameLayout =mRootView.findViewById(R.id.shimmer_topic);
 
-        mRecyclerView = mRootView.findViewById(R.id.category_recycler_view);
+        mRecyclerView = mRootView.findViewById(R.id.category_rv_for_topicfragment);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
         mAdapter = new CategoryAdapter(CATEGORY_LIST);

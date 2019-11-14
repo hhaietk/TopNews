@@ -155,7 +155,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public ItemCategoryViewHolder(@NonNull View v) {
             super(v);
-            recyclerView = v.findViewById(R.id.category_recycler_view);
+            recyclerView = v.findViewById(R.id.category_rv_for_home_fragment);
             // TODO: SnapHelper = smooth scroll
         }
     }
