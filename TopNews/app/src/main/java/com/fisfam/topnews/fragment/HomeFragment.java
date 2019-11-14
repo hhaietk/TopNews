@@ -24,9 +24,14 @@ import com.fisfam.topnews.NewsServiceGenerator;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.HomeAdapter;
 import com.fisfam.topnews.pojo.Articles;
+import com.fisfam.topnews.pojo.Category;
+import com.fisfam.topnews.pojo.CategoryList;
 import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.pojo.Section;
 import com.fisfam.topnews.utils.NetworkCheck;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,6 +40,14 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
+    public static final ArrayList<Category> CATEGORY_LIST = new ArrayList<>(Arrays.asList(
+            new Category(R.drawable.avatar_placeholder, "Business"),
+            new Category(R.drawable.avatar_placeholder, "Entertainment"),
+            new Category(R.drawable.avatar_placeholder, "Health"),
+            new Category(R.drawable.avatar_placeholder, "Science"),
+            new Category(R.drawable.avatar_placeholder, "Sport"),
+            new Category(R.drawable.avatar_placeholder, "Technology")));
+
     private View mRootView;
     private RecyclerView mHomeRecyclerView;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -78,14 +91,8 @@ public class HomeFragment extends Fragment {
         mHomeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mHomeRecyclerView.setHasFixedSize(true);
 
-        // inject the recycler view so adapter can check if last item reached.
-        //TODO: Well there has to be a better way to check this?
-        mHomeAdapter = new HomeAdapter(getActivity(), mHomeRecyclerView);
+        mHomeAdapter = new HomeAdapter(getActivity());
         mHomeRecyclerView.setAdapter(mHomeAdapter);
-
-        mHomeAdapter.setOnLoadMoreListener(() -> {
-            //TODO: load more articles
-        });
 
         mHomeAdapter.setOnItemClickListener((view, articles, position) -> {
             ArticlesDetailsActivity.open(getActivity(), articles);
@@ -123,6 +130,8 @@ public class HomeFragment extends Fragment {
                     return;
                 }
 
+                mHomeAdapter.addData(new Section(getString(R.string.section_category)));
+                mHomeAdapter.addData(new CategoryList(CATEGORY_LIST));
                 mHomeAdapter.addData(new Section(getString(R.string.section_featured)));
                 for (final Articles articles : news.getArticles()) {
                     mHomeAdapter.addData(articles);
@@ -169,12 +178,10 @@ public class HomeFragment extends Fragment {
         mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(show));
         if (show) {
             mShimmerFrameLayout.setVisibility(View.VISIBLE);
-            mHomeRecyclerView.setVisibility(View.INVISIBLE);
             mShimmerFrameLayout.startShimmer();
             return;
         }
         mShimmerFrameLayout.setVisibility(View.INVISIBLE);
-        mHomeRecyclerView.setVisibility(View.VISIBLE);
         mShimmerFrameLayout.stopShimmer();
     }
 }

@@ -63,7 +63,7 @@
     <string name="msg_app_out_date">Application is out of date, please update to get latest version</string>
     <string name="msg_no_internet">Please check your Internet connection and try again</string>
     <string name="title_info">Info</string>
-    <string name="section_topics">Topics</string>
+    <string name="section_category">Category</string>
     <string name="section_featured">Featured</string>
     <string name="section_recent">Recent</string>
     <string name="news_type_gallery">Gallery</string>

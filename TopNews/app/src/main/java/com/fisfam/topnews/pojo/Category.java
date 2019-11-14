@@ -1,9 +1,5 @@
 package com.fisfam.topnews.pojo;
 
-import com.fisfam.topnews.R;
-
-import java.util.ArrayList;
-
 public class Category {
     private int mIconResource;
     private String mCategoryName;
