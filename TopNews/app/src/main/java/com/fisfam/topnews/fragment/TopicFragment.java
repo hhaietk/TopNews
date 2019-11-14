@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.CategoryAdapter;
+import com.fisfam.topnews.adapter.HomeAdapter;
 import com.fisfam.topnews.pojo.Category;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
 public class TopicFragment extends Fragment {
 
@@ -68,18 +69,10 @@ public class TopicFragment extends Fragment {
     private void initUiComponents() {
         mShimmerFrameLayout =mRootView.findViewById(R.id.shimmer_topic);
 
-        ArrayList<Category> topicList = new ArrayList<>();
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Business"));
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Entertainment"));
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Health"));
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Science"));
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Sport"));
-        topicList.add(new Category(R.drawable.avatar_placeholder, "Technology"));
-
-        mRecyclerView = mRootView.findViewById(R.id.categoryRecyclerView);
+        mRecyclerView = mRootView.findViewById(R.id.category_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mAdapter = new CategoryAdapter(topicList);
+        mAdapter = new CategoryAdapter(CATEGORY_LIST);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
