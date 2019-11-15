@@ -16,8 +16,9 @@ import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private ArrayList<Category> mCategoryList;
+    private final OnItemClickListener mListener;
 
-    public static class CategoryViewHolder extends RecyclerView.ViewHolder{
+    public static class CategoryViewHolder extends RecyclerView.ViewHolder {
         public ImageView mImageView;
         public TextView mTextView;
 
@@ -28,8 +29,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         }
     }
 
-    public CategoryAdapter(ArrayList<Category> categoryList){
+    public CategoryAdapter(ArrayList<Category> categoryList, OnItemClickListener listener){
         mCategoryList = categoryList;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -50,10 +52,21 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         Category currentItem = mCategoryList.get(position);
         holder.mImageView.setImageResource(currentItem.getIconResource());
         holder.mTextView.setText(currentItem.getCategoryName());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onItemClick(currentItem);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return mCategoryList.size();
     }
+
+    public interface OnItemClickListener {
+        void onItemClick(Category category);
+    }
+
 }

@@ -7,10 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
@@ -102,7 +105,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ItemCategoryViewHolder vh = (ItemCategoryViewHolder) holder;
             vh.recyclerView.setLayoutManager(layoutManager);
             vh.recyclerView.setHasFixedSize(true);
-            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST);
+            attachSnapHelper(vh.recyclerView);
+            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(Category category) {
+                    Toast.makeText(mContext, "test",Toast.LENGTH_SHORT);
+                    Log.d(TAG, "onItemClick: "+category.getCategoryName());
+                }
+            });
             vh.recyclerView.setAdapter(categoryAdapter);
         }
     }
@@ -183,10 +193,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnItemClickListener {
         void onItemArticlesClick(View view, Articles articles, int position);
 
-        //void onItemTopicClick(View view, Topic obj, int position);
+        //void onItemCategoryClick(View view, Category obj, int position);
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         mOnItemClickListener = mItemClickListener;
+    }
+
+    //Add default snap to center effect
+    public void attachSnapHelper (RecyclerView recyclerView){
+        SnapHelper snapHelper = new LinearSnapHelper();
+        recyclerView.setOnFlingListener(null);
+        snapHelper.attachToRecyclerView(recyclerView);
     }
 }

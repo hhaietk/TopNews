@@ -2,9 +2,11 @@ package com.fisfam.topnews.fragment;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.CategoryAdapter;
+import com.fisfam.topnews.pojo.Category;
 
 import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
 public class TopicFragment extends Fragment {
 
+    private static final String TAG = TopicFragment.class.getSimpleName();
     private View mRootView;
     private ShimmerFrameLayout mShimmerFrameLayout;
     private RecyclerView mRecyclerView;
@@ -68,7 +72,13 @@ public class TopicFragment extends Fragment {
         mRecyclerView = mRootView.findViewById(R.id.category_rv_for_topicfragment);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mAdapter = new CategoryAdapter(CATEGORY_LIST);
+        mAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(Category category) {
+                Toast.makeText(getContext(),category.getCategoryName(),Toast.LENGTH_SHORT);
+                Log.d(TAG, "onItemClick: "+ category.getCategoryName());
+            }
+        });
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
