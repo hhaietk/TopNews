@@ -6,7 +6,9 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
@@ -15,10 +17,15 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fisfam.topnews.R;
+import com.fisfam.topnews.UserPreference;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
@@ -51,8 +58,8 @@ public class UiTools {
             Glide.with(context.getApplicationContext())
                     .load(url)
                     .transition(withCrossFade())
-                    //TODO: implement SharePref
-                    //.diskCacheStrategy(new SharedPref(ctx).getImageCache() ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
+                    .diskCacheStrategy(new UserPreference(context).getImageCache()
+                            ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
                     .thumbnail(thumb)
                     .into(img);
         } catch (Exception e) {
@@ -90,5 +97,34 @@ public class UiTools {
     private static boolean isDarkTheme(Context context){
         int night_mode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return night_mode == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public static void refreshTheme(Context context) {
+        int index = new UserPreference(context).getSelectedTheme();
+        switch (index) {
+            case 0:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                break;
+            case 1:
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                break;
+        }
+    }
+
+    public static void clearImageCacheOnBackground(final Context context) {
+        try {
+            new Thread(() -> Glide.get(context).clearDiskCache()).start();
+        } catch (Exception e) {
+            Log.e(TAG, "clearImageCacheOnBackground: " + e.getMessage());
+        }
+    }
+
+    public static void changeOverflowMenuIconColor(Toolbar toolbar, @ColorInt int color) {
+        try {
+            Drawable drawable = toolbar.getOverflowIcon();
+            drawable.mutate();
+            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        } catch (Exception e) {
+        }
     }
 }
