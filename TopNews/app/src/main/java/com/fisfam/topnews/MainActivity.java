@@ -1,5 +1,6 @@
 package com.fisfam.topnews;
 
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_toolbar_menu);
-        //mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
+        mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(mToolbar);
 
         mActionBar = getSupportActionBar();
@@ -113,13 +114,7 @@ public class MainActivity extends AppCompatActivity {
         mActionBar.setTitle(R.string.app_name);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
-/*        try {
-            Drawable drawable = mToolbar.getOverflowIcon();
-            drawable.mutate();
-            drawable.setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
-        } catch (Exception e) {
-        }*/
-
+        UiTools.changeOverflowMenuIconColor(mToolbar, getResources().getColor(R.color.colorTextAction));
         UiTools.setSmartSystemBar(this);
     }
 

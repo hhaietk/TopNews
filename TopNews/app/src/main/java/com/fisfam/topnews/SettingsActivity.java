@@ -4,16 +4,20 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
+
 import com.fisfam.topnews.utils.UiTools;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -22,6 +26,9 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String TAG = SettingsActivity.class.getSimpleName();
     private View mParentView;
     private SwitchCompat mSwitchPushNotification, mSwitchVibrate, mSwitchImageCache;
+    private String[] mThemes;
+    private UserPreference mUserPref;
+    private TextView mTvTheme;
 
     static void open(final Context context) {
         final Intent i = new Intent(context, SettingsActivity.class);
@@ -33,27 +40,9 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        mUserPref = new UserPreference(this);
         initToolbar();
-        mParentView = findViewById(R.id.parent_view_settings);
-        mSwitchPushNotification = findViewById(R.id.switch_push_notif);
-        mSwitchVibrate = findViewById(R.id.switch_vibrate);
-        mSwitchImageCache = findViewById(R.id.switch_image_cache);
-
-        mSwitchPushNotification.setChecked(false);
-        mSwitchVibrate.setChecked(false);
-        mSwitchImageCache.setChecked(false);
-
-        mSwitchPushNotification.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //TODO: save to share preferences
-        });
-
-        mSwitchVibrate.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //TODO: save to share preferences
-        });
-
-        mSwitchImageCache.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            //TODO: save to share preferences
-        });
+        initUiComponents();
     }
 
     @Override
@@ -67,7 +56,7 @@ public class SettingsActivity extends AppCompatActivity {
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        //toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar == null) {
@@ -76,8 +65,33 @@ public class SettingsActivity extends AppCompatActivity {
         }
         actionBar.setTitle(R.string.title_activity_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        //UiTools.changeOverflowMenuIconColor(toolbar, getResources().getColor(R.color.colorTextAction));
+        UiTools.changeOverflowMenuIconColor(toolbar, getResources().getColor(R.color.colorTextAction));
         UiTools.setSmartSystemBar(this);
+    }
+
+    private void initUiComponents() {
+        mParentView = findViewById(R.id.parent_view_settings);
+        mSwitchPushNotification = findViewById(R.id.switch_push_notif);
+        mSwitchVibrate = findViewById(R.id.switch_vibrate);
+        mSwitchImageCache = findViewById(R.id.switch_image_cache);
+
+        mSwitchPushNotification.setChecked(mUserPref.getPushNotification());
+        mSwitchVibrate.setChecked(mUserPref.getVibration());
+        mSwitchImageCache.setChecked(mUserPref.getImageCache());
+
+        mSwitchPushNotification.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mUserPref.setPushNotification(isChecked));
+
+        mSwitchVibrate.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mUserPref.setVibration(isChecked));
+
+        mSwitchImageCache.setOnCheckedChangeListener(
+                (buttonView, isChecked) -> mUserPref.setImageCache(isChecked));
+
+        mThemes = getResources().getStringArray(R.array.themes);
+        mTvTheme = findViewById(R.id.tv_theme);
+        mTvTheme.setText(mThemes[mUserPref.getSelectedTheme()]);
+
     }
 
     public void onClickLayout(final View view) {
@@ -85,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
         switch (id) {
             /*case R.id.lyt_ringtone:
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(sharedPref.getRingtone()));
+                intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(mUserPref.getRingtone()));
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
@@ -117,7 +131,7 @@ public class SettingsActivity extends AppCompatActivity {
                 UiTools.showDialogAbout(this);
                 break;
             case R.id.lyt_theme:
-                /*showDialogTheme();*/
+                showDialogTheme();
                 break;
         }
     }
@@ -127,27 +141,29 @@ public class SettingsActivity extends AppCompatActivity {
         builder.setTitle(getString(R.string.dialog_confirm_title));
         builder.setMessage(getString(R.string.message_clear_image_cache));
         builder.setPositiveButton(R.string.OK, (dialog, i) -> {
-            //TODO: clear image cache
-            //UiTools.clearImageCacheOnBackground(getApplicationContext());
+            UiTools.clearImageCacheOnBackground(getApplicationContext());
             Snackbar.make(mParentView, getString(R.string.message_after_clear_image_cache), Snackbar.LENGTH_SHORT).show();
         });
         builder.setNegativeButton(R.string.CANCEL, null);
         builder.show();
     }
 
-    /*private void showDialogTheme() {
+    private void showDialogTheme() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.setting_title_theme);
-        builder.setSingleChoiceItems(themes, sharedPref.getSelectedTheme(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int i) {
-                sharedPref.setSelectedTheme(i);
-                tv_theme.setText(themes[sharedPref.getSelectedTheme()]);
-                Tools.refreshTheme(ActivitySettings.this);
-                dialog.dismiss();
-                restartActivity();
-            }
+        builder.setSingleChoiceItems(mThemes, mUserPref.getSelectedTheme(), (dialog, i) -> {
+            mUserPref.setSelectedTheme(i);
+            mTvTheme.setText(mThemes[mUserPref.getSelectedTheme()]);
+            UiTools.refreshTheme(this);
+            dialog.dismiss();
+            restartActivity();
         });
         builder.show();
-    }*/
+    }
+
+    private void restartActivity() {
+        Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
 }
