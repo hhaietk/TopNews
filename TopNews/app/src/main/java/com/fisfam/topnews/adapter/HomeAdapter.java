@@ -106,10 +106,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             vh.recyclerView.setLayoutManager(layoutManager);
             vh.recyclerView.setHasFixedSize(true);
             attachSnapHelper(vh.recyclerView);
-            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnItemClickListener() {
+            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
                 @Override
                 public void onItemClick(Category category) {
-                    Toast.makeText(mContext, "test",Toast.LENGTH_SHORT);
+                    Toast.makeText(mContext, "test",Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "onItemClick: "+category.getCategoryName());
                 }
             });

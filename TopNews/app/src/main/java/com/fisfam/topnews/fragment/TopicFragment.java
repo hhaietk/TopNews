@@ -72,10 +72,10 @@ public class TopicFragment extends Fragment {
         mRecyclerView = mRootView.findViewById(R.id.category_rv_for_topicfragment);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnItemClickListener() {
+        mAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
             @Override
             public void onItemClick(Category category) {
-                Toast.makeText(getContext(),category.getCategoryName(),Toast.LENGTH_SHORT);
+                Toast.makeText(getContext(),category.getCategoryName(),Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onItemClick: "+ category.getCategoryName());
             }
         });
