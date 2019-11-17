@@ -29,7 +29,7 @@ public class TopicFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private CountDownTimer mTimer;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class TopicFragment extends Fragment {
 
     private void startShimmerScreen() {
 
-        new CountDownTimer(2000, 100) {
+        mTimer = new CountDownTimer(2000, 100) {
 
             public void onTick(long millisUntilFinished) {
                 mRecyclerView.setVisibility(View.INVISIBLE);
@@ -54,16 +54,8 @@ public class TopicFragment extends Fragment {
                 mShimmerFrameLayout.setVisibility(View.GONE);
                 mShimmerFrameLayout.stopShimmer();
             }
-        }.start();
-
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                mShimmerFrameLayout.setVisibility(View.INVISIBLE);
-//                mShimmerFrameLayout.stopShimmer();
-//            }
-//        };
-//        new Timer().schedule(task, 1000);
+        };
+        mTimer.start();
     }
 
     private void initUiComponents() {
@@ -97,5 +89,6 @@ public class TopicFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mTimer != null) mTimer.cancel();
     }
 }

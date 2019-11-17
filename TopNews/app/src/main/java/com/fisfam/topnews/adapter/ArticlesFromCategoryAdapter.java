@@ -41,7 +41,6 @@ public class ArticlesFromCategoryAdapter
             date = itemView.findViewById(R.id.date);
             source = itemView.findViewById(R.id.txt_type);
             image = itemView.findViewById(R.id.image_articles);
-            Log.d(TAG, "aaaaaaa " );
         }
     }
 
@@ -49,7 +48,6 @@ public class ArticlesFromCategoryAdapter
     @Override
     public ArticlesFromCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_articles, parent, false);
-        Log.d(TAG, "onCreateViewHolder: bbbbbbb");
         return new ArticlesFromCategoryViewHolder(v);
     }
 
@@ -69,6 +67,12 @@ public class ArticlesFromCategoryAdapter
     @Override
     public int getItemCount() {
         return mItems.size();
+    }
+
+    public void addArticles(Articles articles){
+        mItems.add(articles);
+        int positionStart = getItemCount();
+        notifyItemInserted(positionStart);
     }
 
 }

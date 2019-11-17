@@ -1,5 +1,6 @@
 package com.fisfam.topnews;
 
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -11,10 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.News;
+import com.fisfam.topnews.utils.NetworkCheck;
 import com.fisfam.topnews.utils.UiTools;
 
 import java.util.ArrayList;
@@ -57,7 +62,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         NewsService newsService =
                 NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
         mCallNews = newsService.getTopHeadlines(
-                "gb", mCategory.toLowerCase(), null, null, 10, 0);
+                "gb", mCategory.toLowerCase(), null, null, 15, 0);
         mCallNews.enqueue(new Callback<News>() {
             @Override
             public void onResponse(@Nullable Call<News> call, @NonNull Response<News> response) {
@@ -65,23 +70,22 @@ public class CategoryDetailsActivity extends AppCompatActivity {
 
                 if (news == null) {
                     Log.e(TAG, "onResponse: No news is good news");
-                    //handleFailRequest();
+                    handleFailRequest();
                     return;
                 }
 
                 for (final Articles articles : news.getArticles()) {
-                    mItems.add(articles);
+                    mAdapter.addArticles(articles);
                     Log.d(TAG, "Category:" + mCategory + "" + articles.getTitle());
                 }
 
-                //showRefreshing(false);
             }
 
             @Override
             public void onFailure(@Nullable Call<News> call, @NonNull Throwable t) {
                 Log.e(TAG, t.toString());
                 if (!call.isCanceled()) {
-                    //handleFailRequest();
+                    handleFailRequest();
                 }
             }
         });
@@ -103,5 +107,30 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void handleFailRequest() {
+
+        if (NetworkCheck.isNetworkAvailable(this)){
+            showFailedView(true, getString(R.string.failed_text), R.drawable.img_failed);
+        } else {
+            showFailedView(true, getString(R.string.no_internet_text), R.drawable.img_no_internet);
+        }
+    }
+
+    private void showFailedView(boolean show, String message, @DrawableRes int icon) {
+        View view_failed = findViewById(R.id.category_details_failed);
+
+        ((ImageView) findViewById(R.id.failed_icon)).setImageResource(icon);
+        ((TextView) findViewById(R.id.failed_message)).setText(message);
+        if (show) {
+            mRecyclerView.setVisibility(View.INVISIBLE);
+            view_failed.setVisibility(View.VISIBLE);
+        } else {
+            mRecyclerView.setVisibility(View.VISIBLE);
+            view_failed.setVisibility(View.GONE);
+        }
+        findViewById(R.id.failed_retry).setOnClickListener(view -> requestData());
+    }
+
 
 }

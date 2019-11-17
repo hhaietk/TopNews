@@ -19,8 +19,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
     private final OnCategoryItemClickListener mListener;
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mImageView;
-        public TextView mTextView;
+        private ImageView mImageView;
+        private TextView mTextView;
 
         public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
