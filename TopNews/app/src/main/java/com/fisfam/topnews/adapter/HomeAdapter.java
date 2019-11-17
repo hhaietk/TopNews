@@ -1,6 +1,7 @@
 package com.fisfam.topnews.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
+import com.fisfam.topnews.CategoryDetailsActivity;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.Category;
@@ -30,7 +32,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = HomeAdapter.class.getSimpleName();
-
+    public static final String EXTRA_CATEGORY = "Category";
     private static final int VIEW_TYPE_ARTICLES = 100;
     private static final int VIEW_TYPE_CATEGORY = 200;
     private static final int VIEW_TYPE_SECTION = 300;
@@ -109,8 +111,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
                 @Override
                 public void onItemClick(Category category) {
-                    Toast.makeText(mContext, "test",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "onItemClick: "+category.getCategoryName());
+                    Intent intent = new Intent(mContext, CategoryDetailsActivity.class);
+                    intent.putExtra(EXTRA_CATEGORY, category.getCategoryName());
+                    mContext.startActivity(intent);
                 }
             });
             vh.recyclerView.setAdapter(categoryAdapter);
