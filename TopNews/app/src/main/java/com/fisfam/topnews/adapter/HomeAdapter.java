@@ -1,17 +1,22 @@
 package com.fisfam.topnews.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import com.fisfam.topnews.CategoryDetailsActivity;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.Category;
@@ -27,7 +32,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = HomeAdapter.class.getSimpleName();
-
+    public static final String EXTRA_CATEGORY = "Category";
     private static final int VIEW_TYPE_ARTICLES = 100;
     private static final int VIEW_TYPE_CATEGORY = 200;
     private static final int VIEW_TYPE_SECTION = 300;
@@ -102,7 +107,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ItemCategoryViewHolder vh = (ItemCategoryViewHolder) holder;
             vh.recyclerView.setLayoutManager(layoutManager);
             vh.recyclerView.setHasFixedSize(true);
-            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST);
+            attachSnapHelper(vh.recyclerView);
+            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
+                @Override
+                public void onItemClick(Category category) {
+                    Intent intent = new Intent(mContext, CategoryDetailsActivity.class);
+                    intent.putExtra(EXTRA_CATEGORY, category.getCategoryName());
+                    mContext.startActivity(intent);
+                }
+            });
             vh.recyclerView.setAdapter(categoryAdapter);
         }
     }
@@ -155,7 +168,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public ItemCategoryViewHolder(@NonNull View v) {
             super(v);
-            recyclerView = v.findViewById(R.id.category_recycler_view);
+            recyclerView = v.findViewById(R.id.category_rv_for_home_fragment);
             // TODO: SnapHelper = smooth scroll
         }
     }
@@ -183,10 +196,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public interface OnItemClickListener {
         void onItemArticlesClick(View view, Articles articles, int position);
 
-        //void onItemTopicClick(View view, Topic obj, int position);
+        //void onItemCategoryClick(View view, Category obj, int position);
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
         mOnItemClickListener = mItemClickListener;
+    }
+
+    //Add default snap to center effect
+    public void attachSnapHelper (RecyclerView recyclerView){
+        SnapHelper snapHelper = new LinearSnapHelper();
+        recyclerView.setOnFlingListener(null);
+        snapHelper.attachToRecyclerView(recyclerView);
     }
 }
