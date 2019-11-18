@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fisfam.topnews.ArticlesDetailsActivity;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.utils.UiTools;
@@ -62,6 +63,12 @@ public class ArticlesFromCategoryAdapter
         } else {
             Log.e(TAG, "onBindViewHolder: Context must not be null");
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArticlesDetailsActivity.open(mContext,currentItem);
+            }
+        });
     }
 
     @Override

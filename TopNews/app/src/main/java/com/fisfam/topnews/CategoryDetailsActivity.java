@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.adapter.HomeAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.utils.NetworkCheck;
