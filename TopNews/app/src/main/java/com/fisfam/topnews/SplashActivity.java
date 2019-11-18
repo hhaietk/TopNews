@@ -18,6 +18,13 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         UiTools.setSmartSystemBar(this);
+        // in case app is upgraded, theme is reset, this check the theme and set the settings accordingly
+        UiTools.checkTheme(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         startMainActivityDelay();
     }
 

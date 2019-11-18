@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,11 +47,11 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private List mItems = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
-    private Context mContext;
+    private WeakReference<Context> mContext;
 
     public HomeAdapter(final Context context) {
         super();
-        mContext = new WeakReference<>(context).get();
+        mContext = new WeakReference<>(context);
     }
 
     @NonNull
@@ -88,8 +87,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             vh.title.setText(articles.getTitle());
             vh.date.setText(articles.getPublishedAt());
             vh.source.setText(articles.getSource().getName());
-            if (mContext != null) {
-                UiTools.displayImageThumb(mContext, vh.image, articles.getUrlToImage(), 0.5f);
+            if (mContext.get() != null) {
+                UiTools.displayImageThumb(mContext.get(), vh.image, articles.getUrlToImage(), 0.5f);
             } else {
                 Log.e(TAG, "onBindViewHolder: Context must not be null");
             }
@@ -103,18 +102,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ItemSectionViewHolder vh = (ItemSectionViewHolder) holder;
             vh.title.setText(section.getTitle());
         } else if (holder instanceof ItemCategoryViewHolder) {
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext, RecyclerView.HORIZONTAL, false);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mContext.get(), RecyclerView.HORIZONTAL, false);
             ItemCategoryViewHolder vh = (ItemCategoryViewHolder) holder;
             vh.recyclerView.setLayoutManager(layoutManager);
             vh.recyclerView.setHasFixedSize(true);
             attachSnapHelper(vh.recyclerView);
-            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
-                @Override
-                public void onItemClick(Category category) {
-                    Intent intent = new Intent(mContext, CategoryDetailsActivity.class);
-                    intent.putExtra(EXTRA_CATEGORY, category.getCategoryName());
-                    mContext.startActivity(intent);
-                }
+            CategoryAdapter categoryAdapter = new CategoryAdapter(CATEGORY_LIST, category -> {
+                Intent intent = new Intent(mContext.get(), CategoryDetailsActivity.class);
+                intent.putExtra(EXTRA_CATEGORY, category.getCategoryName());
+                mContext.get().startActivity(intent);
             });
             vh.recyclerView.setAdapter(categoryAdapter);
         }

@@ -3,11 +3,10 @@ package com.fisfam.topnews.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,8 +20,6 @@ import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.CategoryAdapter;
 import com.fisfam.topnews.pojo.Category;
 
-import java.lang.ref.WeakReference;
-
 import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
 public class TopicFragment extends Fragment {
@@ -34,6 +31,7 @@ public class TopicFragment extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private CountDownTimer mTimer;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
