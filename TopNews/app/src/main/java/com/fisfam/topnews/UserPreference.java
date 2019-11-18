@@ -3,16 +3,13 @@ package com.fisfam.topnews;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import java.lang.ref.WeakReference;
-
 public class UserPreference {
 
     private static final String DEFAULT_RINGTONE_URL = "content://settings/system/notification_sound";
     private SharedPreferences mSharedPref;
 
     public UserPreference(final Context context) {
-        Context weakContext = new WeakReference<>(context).get();
-        mSharedPref = weakContext.getSharedPreferences("MAIN_PREF", Context.MODE_PRIVATE);
+        mSharedPref = context.getSharedPreferences("MAIN_PREF", Context.MODE_PRIVATE);
     }
 
     public boolean getVibration() {

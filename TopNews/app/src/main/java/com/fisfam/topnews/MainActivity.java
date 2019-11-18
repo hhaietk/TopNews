@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
     private void initToolbar() {
         mToolbar = findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.ic_toolbar_menu);
+        //mToolbar.getNavigationIcon().setColorFilter(new BlendModeColorFilter(R.color.colorTextAction, BlendMode.SRC_ATOP));
         mToolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(mToolbar);
 
