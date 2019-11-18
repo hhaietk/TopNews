@@ -107,7 +107,9 @@ public class Articles implements Parcelable {
     }
 
     public String getPublishedAt() {
-        return publishedAt;
+        //
+        String string = publishedAt.replaceAll("[T|Z]", " ");
+        return string;
     }
 
     public String getContent() {

@@ -1,10 +1,13 @@
 package com.fisfam.topnews.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,23 +16,24 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.fisfam.topnews.CategoryDetailsActivity;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.adapter.CategoryAdapter;
-import com.fisfam.topnews.adapter.HomeAdapter;
 import com.fisfam.topnews.pojo.Category;
 
-import java.util.ArrayList;
+import java.lang.ref.WeakReference;
 
 import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
 public class TopicFragment extends Fragment {
 
+    private static final String TAG = TopicFragment.class.getSimpleName();
     private View mRootView;
     private ShimmerFrameLayout mShimmerFrameLayout;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private CountDownTimer mTimer;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,7 +45,7 @@ public class TopicFragment extends Fragment {
 
     private void startShimmerScreen() {
 
-        new CountDownTimer(2000, 100) {
+        mTimer = new CountDownTimer(2000, 100) {
 
             public void onTick(long millisUntilFinished) {
                 mRecyclerView.setVisibility(View.INVISIBLE);
@@ -54,25 +58,24 @@ public class TopicFragment extends Fragment {
                 mShimmerFrameLayout.setVisibility(View.GONE);
                 mShimmerFrameLayout.stopShimmer();
             }
-        }.start();
-
-//        TimerTask task = new TimerTask() {
-//            @Override
-//            public void run() {
-//                mShimmerFrameLayout.setVisibility(View.INVISIBLE);
-//                mShimmerFrameLayout.stopShimmer();
-//            }
-//        };
-//        new Timer().schedule(task, 1000);
+        };
+        mTimer.start();
     }
 
     private void initUiComponents() {
         mShimmerFrameLayout =mRootView.findViewById(R.id.shimmer_topic);
 
-        mRecyclerView = mRootView.findViewById(R.id.category_recycler_view);
+        mRecyclerView = mRootView.findViewById(R.id.category_rv_for_topicfragment);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mAdapter = new CategoryAdapter(CATEGORY_LIST);
+        mAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
+            @Override
+            public void onItemClick(Category category) {
+                Intent intent = new Intent(getContext(), CategoryDetailsActivity.class);
+                intent.putExtra("Category", category.getCategoryName());
+                startActivity(intent);
+            }
+        });
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -91,5 +94,6 @@ public class TopicFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mTimer != null) mTimer.cancel();
     }
 }
