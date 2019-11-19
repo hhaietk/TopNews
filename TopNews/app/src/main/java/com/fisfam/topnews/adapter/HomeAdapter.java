@@ -37,12 +37,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int VIEW_TYPE_SECTION = 300;
 
     public static final ArrayList<Category> CATEGORY_LIST = new ArrayList<>(Arrays.asList(
-            new Category(R.drawable.avatar_placeholder, "Business"),
-            new Category(R.drawable.avatar_placeholder, "Entertainment"),
-            new Category(R.drawable.avatar_placeholder, "Health"),
-            new Category(R.drawable.avatar_placeholder, "Science"),
-            new Category(R.drawable.avatar_placeholder, "Sport"),
-            new Category(R.drawable.avatar_placeholder, "Technology")
+            new Category(R.drawable.ic_business_category, "Business"),
+            new Category(R.drawable.ic_entertainment_category, "Entertainment"),
+            new Category(R.drawable.ic_health_category, "Health"),
+            new Category(R.drawable.ic_science_category, "Science"),
+            new Category(R.drawable.ic_sport_category, "Sport"),
+            new Category(R.drawable.ic_technology_category, "Technology")
     ));
 
     private List mItems = new ArrayList<>();

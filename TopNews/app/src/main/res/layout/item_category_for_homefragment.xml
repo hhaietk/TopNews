@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/avatar_placeholder"
-                android:tint="@color/colorTextAction" />
+                android:tint="@color/colorBackground" />
 
             <ImageView
                 android:id="@+id/category_icon"
