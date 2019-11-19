@@ -1,5 +1,12 @@
 package com.fisfam.topnews;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,15 +16,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
-import com.fisfam.topnews.adapter.HomeAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.utils.NetworkCheck;
@@ -114,7 +113,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         if (NetworkCheck.isNetworkAvailable(this)){
             showFailedView(true, getString(R.string.failed_text), R.drawable.img_failed);
         } else {
-            showFailedView(true, getString(R.string.no_internet_text), R.drawable.img_no_internet);
+            showFailedView(false, getString(R.string.no_internet_text), R.drawable.img_no_internet);
         }
     }
 

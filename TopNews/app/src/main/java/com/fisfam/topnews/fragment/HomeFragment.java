@@ -1,7 +1,6 @@
 package com.fisfam.topnews.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +39,7 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private static final String TAG = HomeFragment.class.getSimpleName();
-    public static final ArrayList<Category> CATEGORY_LIST = new ArrayList<>(Arrays.asList(
+    private static final ArrayList<Category> CATEGORY_LIST = new ArrayList<>(Arrays.asList(
             new Category(R.drawable.avatar_placeholder, "Business"),
             new Category(R.drawable.avatar_placeholder, "Entertainment"),
             new Category(R.drawable.avatar_placeholder, "Health"),
@@ -59,12 +58,9 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_home, container, false);
-
         initUiComponents();
         showRefreshing(true);
-
-        new Handler().postDelayed(this::requestData, 500);
-
+        requestData();
         return mRootView;
     }
 
@@ -132,6 +128,7 @@ public class HomeFragment extends Fragment {
 
                 mHomeAdapter.addData(new Section(getString(R.string.section_category)));
                 mHomeAdapter.addData(new CategoryList(CATEGORY_LIST));
+                // TODO: change Featured to "breaking news" and set up translation
                 mHomeAdapter.addData(new Section(getString(R.string.section_featured)));
                 for (final Articles articles : news.getArticles()) {
                     mHomeAdapter.addData(articles);
@@ -150,6 +147,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
+    //TODO: maybe move handleFailRequest and showFailedView to UiTools
     private void handleFailRequest() {
         showRefreshing(false);
         if (NetworkCheck.isNetworkAvailable(getActivity())){
@@ -175,7 +173,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showRefreshing(final boolean show) {
-        mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(show));
+        mSwipeRefreshLayout.setRefreshing(show);
         if (show) {
             mShimmerFrameLayout.setVisibility(View.VISIBLE);
             mShimmerFrameLayout.startShimmer();

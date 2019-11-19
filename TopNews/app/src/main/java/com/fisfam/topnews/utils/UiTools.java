@@ -6,7 +6,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.PorterDuff;
+import android.graphics.BlendMode;
+import android.graphics.BlendModeColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -32,6 +33,8 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 public class UiTools {
 
     private static final String TAG = UiTools.class.getSimpleName();
+    private static final int LIGHT_MODE = 0;
+    private static final int DARK_MODE = 1;
 
     public static void showDialogAbout(Context context) {
         final Dialog dialog = new Dialog(context);
@@ -76,7 +79,7 @@ public class UiTools {
         }
     }
 
-    public static void setSystemBarColor(Activity act, @ColorRes int color) {
+    private static void setSystemBarColor(Activity act, @ColorRes int color) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             Window window = act.getWindow();
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -85,7 +88,7 @@ public class UiTools {
         }
     }
 
-    public static void setSystemBarLight(Activity act) {
+    private static void setSystemBarLight(Activity act) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             View view = act.findViewById(android.R.id.content);
             int flags = view.getSystemUiVisibility();
@@ -102,10 +105,10 @@ public class UiTools {
     public static void refreshTheme(Context context) {
         int index = new UserPreference(context).getSelectedTheme();
         switch (index) {
-            case 0:
+            case LIGHT_MODE:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 break;
-            case 1:
+            case DARK_MODE:
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 break;
         }
@@ -123,8 +126,15 @@ public class UiTools {
         try {
             Drawable drawable = toolbar.getOverflowIcon();
             drawable.mutate();
-            drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
         } catch (Exception e) {
+        }
+    }
+
+    public static void checkTheme(final Context context) {
+        UserPreference pref = new UserPreference(context);
+        if (!isDarkTheme(context) && pref.getSelectedTheme() == DARK_MODE) {
+            pref.setSelectedTheme(LIGHT_MODE);
         }
     }
 }
