@@ -52,13 +52,13 @@ public class UserPreference {
         mSharedPref.edit().putString("SETTINGS_COUNTRY", value).apply();
     }
 
-    public String getCountry(){
+    public String getCountry() {
         return mSharedPref.getString("SETTINGS_COUNTRY", "gb");
     }
 
-    public String getCountryCode(){
-        String country = "";
-        switch (mSharedPref.getString("SETTINGS_COUNTRY", "gb")){
+    public String getCountryCode() {
+        String country ;
+        switch (mSharedPref.getString("SETTINGS_COUNTRY", "gb")) {
             case "Germany":
                 country = "de";
                 break;
@@ -77,6 +77,8 @@ public class UserPreference {
             case "Italy":
                 country = "it";
                 break;
+            default:
+                country = "gb";
         }
         return country;
     }

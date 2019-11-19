@@ -198,6 +198,16 @@
     <string name="yesterday">Yesterday</string>
     <string name="days_ago">days ago</string>
 
+    <!-- Countries used for news source -->
+    <string-array name="countries_news_source">
+        <item>Germany</item>
+        <item>France</item>
+        <item>England</item>
+        <item>USA</item>
+        <item>China</item>
+        <item>Italy</item>
+    </string-array>
+
     <!--Other String -->
     <string name="confirmation">Confirmation</string>
     <string name="failed_text">Something went wrong</string>
