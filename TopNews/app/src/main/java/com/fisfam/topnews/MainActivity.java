@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         mUserPref = new UserPreference(getApplicationContext());
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose a country:");
+        builder.setTitle(getString(R.string.choose_a_country));
         // add a radio button list
         String[] countries = getResources().getStringArray(R.array.countries_news_source);
         //the button is always checked by the value stored in mUserPref

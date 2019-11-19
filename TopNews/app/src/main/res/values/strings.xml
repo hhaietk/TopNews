@@ -3,14 +3,14 @@
 
     <string name="api_key">2ccc7b03852442ea9cbc29b58ee7903a</string>
 
-    <string name="content_about">Top News is an android news application.
-        Developed by Hoang Hai Ngo. Elektrobit Automotive GmbH
+    <string name="content_about">Top News is an Android news application (Powered by News API).
+        Developed by Hoang Hai Ngo and Phi Long Trinh
     </string>
 
     <string name="share_text">
         Read News \'%1$s\'%n
         Using app \'%2$s\'%n
-        http://play.google.com/store/apps/details?id=com.app.notch
+        https://github.com/hhaietk/TopNews
     </string>
 
     <!--=========================================================================================-->
@@ -221,6 +221,7 @@
     <string name="msg_copied_clipboard">Text copied to clipboard</string>
     <string name="failed">Failed</string>
     <string name="title_activity_choose_language">Choose language</string>
+    <string name="choose_a_country">Choose a country:</string>
 
 
 </resources>
