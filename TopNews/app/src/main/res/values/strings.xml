@@ -210,6 +210,7 @@
     <string name="delete_success">Delete successfully</string>
     <string name="msg_copied_clipboard">Text copied to clipboard</string>
     <string name="failed">Failed</string>
+    <string name="title_activity_choose_language">Choose language</string>
 
 
 </resources>

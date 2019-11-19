@@ -37,6 +37,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
     private ArticlesFromCategoryAdapter mAdapter;
     private List<Articles> mItems = new ArrayList<>();
     private Call<News> mCallNews;
+    private UserPreference mUserPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +60,11 @@ public class CategoryDetailsActivity extends AppCompatActivity {
     }
 
     private void requestData(){
+        mUserPrefs = new UserPreference(this);
         NewsService newsService =
                 NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
         mCallNews = newsService.getTopHeadlines(
-                "gb", mCategory.toLowerCase(), null, null, 15, 0);
+                mUserPrefs.getCountryCode(), mCategory.toLowerCase(), null, null, 15, 0);
         mCallNews.enqueue(new Callback<News>() {
             @Override
             public void onResponse(@Nullable Call<News> call, @NonNull Response<News> response) {
