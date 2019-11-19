@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose a country:");
         // add a radio button list
-        String[] countries = {"Germany", "France", "England", "USA", "China", "Italy"};
+        String[] countries = getResources().getStringArray(R.array.countries_news_source);
         //the button is always checked by the value stored in mUserPref
         builder.setSingleChoiceItems(countries, Arrays.asList(countries).indexOf(mUserPref.getCountry()),
                 new DialogInterface.OnClickListener() {
