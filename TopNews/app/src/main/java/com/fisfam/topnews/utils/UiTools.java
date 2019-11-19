@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.BlendMode;
 import android.graphics.BlendModeColorFilter;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -126,7 +127,11 @@ public class UiTools {
         try {
             Drawable drawable = toolbar.getOverflowIcon();
             drawable.mutate();
-            drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                drawable.setColorFilter(new BlendModeColorFilter(color, BlendMode.SRC_ATOP));
+            } else {
+                drawable.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+            }
         } catch (Exception e) {
         }
     }
