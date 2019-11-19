@@ -1,5 +1,6 @@
 package com.fisfam.topnews;
 
+import android.content.DialogInterface;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -25,12 +27,15 @@ import com.fisfam.topnews.utils.UiTools;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
     private Toolbar mToolbar;
     private ActionBar mActionBar;
     private DrawerLayout mDrawer;
+    public UserPreference mUserPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 mDrawer.openDrawer(GravityCompat.END);
             }
+        } else if(menu_id == R.id.action_choose_language){
+            chooseCountry();
         } else if (menu_id == R.id.action_search) {
             //TODO: open search
         } else if (menu_id == R.id.action_notification) {
@@ -87,6 +94,35 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    //Choose country of news source
+    private void chooseCountry() {
+        mUserPref = new UserPreference(getApplicationContext());
+        // setup the alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.choose_a_country));
+        // add a radio button list
+        String[] countries = getResources().getStringArray(R.array.countries_news_source);
+        //the button is always checked by the value stored in mUserPref
+        builder.setSingleChoiceItems(countries, Arrays.asList(countries).indexOf(mUserPref.getCountry()),
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mUserPref.setCountry(countries[which]);
+            }
+        });
+        // add Done button to close dialog and reload HomeFragment
+        builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                loadFragment(new HomeFragment());
+            }
+        });
+        // create and show the alert dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     private long exitTime = 0;
@@ -115,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         mActionBar.setTitle(R.string.app_name);
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
-        UiTools.changeOverflowMenuIconColor(mToolbar, getResources().getColor(R.color.colorTextAction));
+        //UiTools.changeOverflowMenuIconColor(mToolbar, getResources().getColor(R.color.colorTextAction));
         UiTools.setSmartSystemBar(this);
     }
 

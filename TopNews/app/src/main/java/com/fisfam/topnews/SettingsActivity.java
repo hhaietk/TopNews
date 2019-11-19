@@ -65,7 +65,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
         actionBar.setTitle(R.string.title_activity_settings);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        UiTools.changeOverflowMenuIconColor(toolbar, getResources().getColor(R.color.colorTextAction));
+        //UiTools.changeOverflowMenuIconColor(toolbar, getResources().getColor(R.color.colorTextAction));
         UiTools.setSmartSystemBar(this);
     }
 

@@ -47,4 +47,39 @@ public class UserPreference {
     public void setVibration(boolean value) {
         mSharedPref.edit().putBoolean("SETTINGS_VIBRATION", value).apply();
     }
+
+    public void setCountry(String value) {
+        mSharedPref.edit().putString("SETTINGS_COUNTRY", value).apply();
+    }
+
+    public String getCountry() {
+        return mSharedPref.getString("SETTINGS_COUNTRY", "gb");
+    }
+
+    public String getCountryCode() {
+        String country;
+        switch (mSharedPref.getString("SETTINGS_COUNTRY", "gb")) {
+            case "Germany":
+                country = "de";
+                break;
+            case "France":
+                country = "fr";
+                break;
+            case "England":
+                country = "gb";
+                break;
+            case "USA":
+                country = "us";
+                break;
+            case "China":
+                country = "cn";
+                break;
+            case "Italy":
+                country = "it";
+                break;
+            default:
+                country = "gb";
+        }
+        return country;
+    }
 }
