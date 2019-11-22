@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private void chooseCountry() {
         mUserPref = new UserPreference(getApplicationContext());
         // setup the alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         builder.setTitle(getString(R.string.choose_a_country));
         // add a radio button list
         String[] countries = getResources().getStringArray(R.array.countries_news_source);
