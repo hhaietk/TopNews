@@ -158,8 +158,10 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigationDrawer() {
         mDrawer = findViewById(R.id.drawer);
         TextView settings = findViewById(R.id.settings);
+        TextView login_logout = findViewById(R.id.login_logout);
 
         settings.setOnClickListener(v -> SettingsActivity.open(this));
+        login_logout.setOnClickListener(v -> LoginActivity.open(this));
     }
 
     private void loadFragment(final Fragment fragment) {
