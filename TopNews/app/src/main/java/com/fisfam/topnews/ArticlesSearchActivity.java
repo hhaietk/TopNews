@@ -3,6 +3,7 @@ package com.fisfam.topnews;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -43,6 +44,15 @@ public class ArticlesSearchActivity extends AppCompatActivity {
         initUIComponents();
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return(super.onOptionsItemSelected(item));
+    }
+
     private void initUIComponents() {
         mRecyclerView = findViewById(R.id.recyclerview_for_searched_articles);
         initRecyclerView();
@@ -59,7 +69,7 @@ public class ArticlesSearchActivity extends AppCompatActivity {
 
         mEditText = findViewById(R.id.search_articles_edittext);
 
-        //perform search after hit the search button
+        //perform search and hide keyboard after hit the search button
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
