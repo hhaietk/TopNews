@@ -213,7 +213,6 @@
     <string name="failed_text">Something went wrong</string>
     <string name="failed_when_load">Failed when load data</string>
     <string name="no_internet_text">You are offline</string>
-    <string name="no_item">No Item</string>
     <string name="msg_data_loaded">Data loaded</string>
     <string name="title_delete_confirm">Delete Confirmation</string>
     <string name="content_delete_confirm">Are you sure want to delete all&#160;</string>
@@ -222,6 +221,9 @@
     <string name="failed">Failed</string>
     <string name="title_activity_choose_language">Choose language</string>
     <string name="choose_a_country">Choose a country:</string>
+    <string name="searchview_hint">Enter text to search</string>
+    <string name="no_item">No Item</string>
+    <string name="please_enter_text">Please enter text to search</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.fisfam.topnews;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.util.Log;
@@ -87,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
         } else if(menu_id == R.id.action_choose_language){
             chooseCountry();
         } else if (menu_id == R.id.action_search) {
-            //TODO: open search
+            Intent intent = new Intent(MainActivity.this, ArticlesSearchActivity.class);
+            startActivity(intent);
         } else if (menu_id == R.id.action_notification) {
             //TODO: open notification
         } else {
