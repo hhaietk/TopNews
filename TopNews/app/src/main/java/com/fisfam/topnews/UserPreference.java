@@ -82,4 +82,12 @@ public class UserPreference {
         }
         return country;
     }
+
+    public void setUser(String name) {
+        mSharedPref.edit().putString("USER_NAME", name).apply();
+    }
+
+    public String getUser() {
+        return mSharedPref.getString("USER_NAME", "");
+    }
 }

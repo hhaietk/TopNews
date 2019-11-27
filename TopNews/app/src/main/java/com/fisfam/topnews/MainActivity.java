@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ActionBar mActionBar;
     private DrawerLayout mDrawer;
+    private TextView mName;
     public UserPreference mUserPref;
 
     @Override
@@ -48,6 +49,14 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: check app version
         //TODO: get Database for notification
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mName != null) {
+            mName.setText(new UserPreference(this).getUser());
+        }
     }
 
     @Override
@@ -159,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawer = findViewById(R.id.drawer);
         TextView settings = findViewById(R.id.settings);
         TextView login_logout = findViewById(R.id.login_logout);
+        mName = findViewById(R.id.name_drawer);
 
         settings.setOnClickListener(v -> SettingsActivity.open(this));
         login_logout.setOnClickListener(v -> LoginActivity.open(this));

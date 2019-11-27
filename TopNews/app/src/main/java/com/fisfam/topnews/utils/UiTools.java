@@ -26,6 +26,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.UserPreference;
 
@@ -171,5 +172,16 @@ public class UiTools {
                 .translationY(0)
                 .setDuration(300)
                 .start();
+    }
+
+    public static void displayImageCircle(Context ctx, ImageView img, String url) {
+        try {
+            Glide.with(ctx.getApplicationContext()).load(url)
+                    .transition(withCrossFade())
+                    .diskCacheStrategy(new UserPreference(ctx).getImageCache() ? DiskCacheStrategy.ALL : DiskCacheStrategy.NONE)
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(img);
+        } catch (Exception e) {
+        }
     }
 }
