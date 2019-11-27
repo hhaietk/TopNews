@@ -4,8 +4,10 @@ Link to app demo: https://youtu.be/O5IYKxzrk4k <br/>
 Developed by Hoang Hai Ngo and Phi Long Trinh 
 <br/>
 # Screenshots
-<a href="https://postimg.cc/HjdyPn7P" target="_blank"><img src="https://i.postimg.cc/HjdyPn7P/Screenshot-1574863808.png" alt="Screenshot-1574863808"/></a>
-<a href="https://postimg.cc/hQDQJZBq" target="_blank"><img src="https://i.postimg.cc/hQDQJZBq/Screenshot-1574863818.png" alt="Screenshot-1574863818"/></a>
-<a href="https://postimg.cc/zb1gNX2v" target="_blank"><img src="https://i.postimg.cc/zb1gNX2v/Screenshot-1574863839.png" alt="Screenshot-1574863839"/></a>
-<a href="https://postimg.cc/LYBZ8KGT" target="_blank"><img src="https://i.postimg.cc/LYBZ8KGT/Screenshot-1574863856.png" alt="Screenshot-1574863856"/></a>
-<a href="https://postimg.cc/F7F01zrJ" target="_blank"><img src="https://i.postimg.cc/F7F01zrJ/Screenshot-1574863963.png" alt="Screenshot-1574863963"/></a><br/><br/>
+
+<a href="https://postimg.cc/HjdyPn7P" target="_blank"><img src="https://i.postimg.cc/HjdyPn7P/Screenshot-1574863808.png" alt="Screenshot-1574863808"/></a> &nbsp;&nbsp;
+<a href="https://postimg.cc/hQDQJZBq" target="_blank"><img src="https://i.postimg.cc/hQDQJZBq/Screenshot-1574863818.png" alt="Screenshot-1574863818"/></a> &nbsp;&nbsp;
+<a href="https://postimg.cc/zb1gNX2v" target="_blank"><img src="https://i.postimg.cc/zb1gNX2v/Screenshot-1574863839.png" alt="Screenshot-1574863839"/></a> &nbsp;&nbsp;
+<a href="https://postimg.cc/LYBZ8KGT" target="_blank"><img src="https://i.postimg.cc/LYBZ8KGT/Screenshot-1574863856.png" alt="Screenshot-1574863856"/></a> &nbsp;&nbsp;
+<a href="https://postimg.cc/F7F01zrJ" target="_blank"><img src="https://i.postimg.cc/F7F01zrJ/Screenshot-1574863963.png" alt="Screenshot-1574863963"/></a><br/><br/> &nbsp;&nbsp;
+
