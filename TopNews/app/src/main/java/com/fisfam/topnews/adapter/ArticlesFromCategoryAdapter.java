@@ -82,4 +82,9 @@ public class ArticlesFromCategoryAdapter
         notifyItemInserted(positionStart);
     }
 
+    public void resetArticles(){
+        mItems.clear();
+        notifyDataSetChanged();
+    }
+
 }
