@@ -69,6 +69,7 @@
     <string name="news_type_gallery">Gallery</string>
     <string name="news_type_video">Video</string>
     <string name="news_type_article">Article</string>
+    <string name="log_out_message">You are logged out</string>
 
     <!--ActivityNewsDetails string data -->
     <string name="remove_from_saved">News remove from Saved</string>

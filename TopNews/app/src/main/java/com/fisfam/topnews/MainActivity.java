@@ -26,6 +26,8 @@ import com.fisfam.topnews.fragment.SavedFragment;
 import com.fisfam.topnews.fragment.TopicFragment;
 import com.fisfam.topnews.utils.UiTools;
 
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -37,13 +39,17 @@ public class MainActivity extends AppCompatActivity {
     private ActionBar mActionBar;
     private DrawerLayout mDrawer;
     private TextView mName;
-    public UserPreference mUserPref;
+    private TextView mLoginLogout;
+    private UserPreference mUserPref;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        mUserPref = new UserPreference(this);
         initToolbar();
         initNavigationDrawer();
         loadFragment(new HomeFragment());
@@ -55,8 +61,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (mUserPref.getUser().isEmpty()) {
+            mLoginLogout.setText(R.string.login_title);
+        } else {
+            mLoginLogout.setText(R.string.logout_title);
+        }
+
         if (mName != null) {
-            mName.setText(new UserPreference(this).getUser());
+            mName.setText(mUserPref.getUser());
         }
     }
 
@@ -109,7 +122,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Choose country of news source
     private void chooseCountry() {
-        mUserPref = new UserPreference(getApplicationContext());
         // setup the alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialogTheme);
         builder.setTitle(getString(R.string.choose_a_country));
@@ -169,11 +181,21 @@ public class MainActivity extends AppCompatActivity {
     private void initNavigationDrawer() {
         mDrawer = findViewById(R.id.drawer);
         TextView settings = findViewById(R.id.settings);
-        TextView login_logout = findViewById(R.id.login_logout);
+        mLoginLogout = findViewById(R.id.login_logout);
         mName = findViewById(R.id.name_drawer);
 
         settings.setOnClickListener(v -> SettingsActivity.open(this));
-        login_logout.setOnClickListener(v -> LoginActivity.open(this));
+
+        mLoginLogout.setOnClickListener(v -> {
+            if (mLoginLogout.getText().toString().equals(getString(R.string.login_title))) {
+                LoginActivity.open(this);
+            } else {
+                mName.setText("");
+                mAuth.signOut();
+                mUserPref.setUser("");
+                Snackbar.make(mDrawer, R.string.log_out_message, Snackbar.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadFragment(final Fragment fragment) {
