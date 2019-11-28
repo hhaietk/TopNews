@@ -5,12 +5,16 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -19,13 +23,16 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 
 import com.fisfam.topnews.utils.UiTools;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = SettingsActivity.class.getSimpleName();
     private View mParentView;
-    private SwitchCompat mSwitchPushNotification, mSwitchVibrate, mSwitchImageCache;
     private String[] mThemes;
     private UserPreference mUserPref;
     private TextView mTvTheme;
@@ -71,40 +78,41 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initUiComponents() {
         mParentView = findViewById(R.id.parent_view_settings);
-        mSwitchPushNotification = findViewById(R.id.switch_push_notif);
-        mSwitchVibrate = findViewById(R.id.switch_vibrate);
-        mSwitchImageCache = findViewById(R.id.switch_image_cache);
+        SwitchCompat switchPushNotification = findViewById(R.id.switch_push_notif);
+        SwitchCompat switchVibrate = findViewById(R.id.switch_vibrate);
+        SwitchCompat switchImageCache = findViewById(R.id.switch_image_cache);
 
-        mSwitchPushNotification.setChecked(mUserPref.getPushNotification());
-        mSwitchVibrate.setChecked(mUserPref.getVibration());
-        mSwitchImageCache.setChecked(mUserPref.getImageCache());
+        switchPushNotification.setChecked(mUserPref.getPushNotification());
+        switchVibrate.setChecked(mUserPref.getVibration());
+        switchImageCache.setChecked(mUserPref.getImageCache());
 
-        mSwitchPushNotification.setOnCheckedChangeListener(
+        switchPushNotification.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> mUserPref.setPushNotification(isChecked));
 
-        mSwitchVibrate.setOnCheckedChangeListener(
+        switchVibrate.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> mUserPref.setVibration(isChecked));
 
-        mSwitchImageCache.setOnCheckedChangeListener(
+        switchImageCache.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> mUserPref.setImageCache(isChecked));
 
         mThemes = getResources().getStringArray(R.array.themes);
         mTvTheme = findViewById(R.id.tv_theme);
         mTvTheme.setText(mThemes[mUserPref.getSelectedTheme()]);
 
+        requestToken();
     }
 
     public void onClickLayout(final View view) {
         int id = view.getId();
         switch (id) {
-            /*case R.id.lyt_ringtone:
+            case R.id.lyt_ringtone:
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_EXISTING_URI, Uri.parse(mUserPref.getRingtone()));
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_DEFAULT, true);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 startActivityForResult(intent, 999);
-                break;*/
+                break;
             case R.id.lyt_img_cache:
                 showDialogClearImageCache();
                 break;
@@ -165,5 +173,22 @@ public class SettingsActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
+    }
+
+    private void requestToken() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = task.getResult().getToken();
+                    TextView tokenText = findViewById(R.id.build_version);
+                    tokenText.setText(token);
+
+                    Log.d(TAG, "requestToken: token = " + token);
+                });
     }
 }
