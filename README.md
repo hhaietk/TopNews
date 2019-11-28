@@ -1,14 +1,16 @@
 # Top News
 
-An Android App for collecting and displaying news from 5 different countries and sources. Powered by News API. The user can read articles online or save them to read offline. Retrofit2 was used to fetch data from News API and Romm was used to save articles for offline reading. <br/>
+Developed by Hoang Hai Ngo and Phi Long Trinh <br/>
+
+An Android App for collecting and displaying news from different sources and 5 different countries. Powered by News API. The user can read articles online or save them to read offline. Retrofit2 was used to fetch data from News API and Room was used to save articles for offline reading. Firebase integration for notification and user configuration <br/>
+
 Link to app demo: https://youtu.be/O5IYKxzrk4k <br/>
-Developed by Hoang Hai Ngo and Phi Long Trinh 
-<br/>
 
 # Features
 
 - Material Design UI
 - User Register/Login
+- Notifications
 - Offline Reading
 - Day/Night Mode
 - No Ads
