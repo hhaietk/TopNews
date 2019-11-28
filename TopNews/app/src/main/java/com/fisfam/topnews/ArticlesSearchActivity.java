@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,12 +24,12 @@ import com.fisfam.topnews.pojo.News;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fisfam.topnews.utils.UiTools;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ArticlesSearchActivity extends AppCompatActivity {
-    private Toolbar mToolbar;
     private EditText mEditText;
     private RecyclerView mRecyclerView;
     private View mNoItemFoundedView;
@@ -40,8 +41,9 @@ public class ArticlesSearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_articles_search);
+        setContentView(R.layout.activity_search);
         initUIComponents();
+        UiTools.setSmartSystemBar(this);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -54,20 +56,13 @@ public class ArticlesSearchActivity extends AppCompatActivity {
     }
 
     private void initUIComponents() {
-        mRecyclerView = findViewById(R.id.recyclerview_for_searched_articles);
+        mRecyclerView = findViewById(R.id.recyclerView_search);
         initRecyclerView();
-        mNoItemFoundedView = findViewById(R.id.no_item_view);
-
-        mToolbar = findViewById(R.id.toolbar_articles_search);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        setSupportActionBar(mToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle(null);
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        mNoItemFoundedView = findViewById(R.id.lyt_failed);
 
         Toast.makeText(this, R.string.please_enter_text, Toast.LENGTH_LONG).show();
 
-        mEditText = findViewById(R.id.search_articles_edittext);
+        mEditText = findViewById(R.id.et_search);
 
         //perform search and hide keyboard after hit the search button
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -79,6 +74,10 @@ public class ArticlesSearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        ImageButton backButton = findViewById(R.id.button_back_search);
+        backButton.setOnClickListener(v -> finish());
+
     }
 
     private void performSearch() {
