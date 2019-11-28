@@ -2,13 +2,20 @@ package com.fisfam.topnews;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
+
+import java.lang.ref.WeakReference;
 
 public class UserPreference {
 
     private static final String DEFAULT_RINGTONE_URL = "content://settings/system/notification_sound";
     private SharedPreferences mSharedPref;
+    private WeakReference<Context> mWeakContext;
 
     public UserPreference(final Context context) {
+        mWeakContext = new WeakReference<>(context);
         mSharedPref = context.getSharedPreferences("MAIN_PREF", Context.MODE_PRIVATE);
     }
 
@@ -30,10 +37,6 @@ public class UserPreference {
 
     public int getSelectedTheme() {
         return mSharedPref.getInt("SETTINGS_THEME", 0);
-    }
-
-    public String getRingtone() {
-        return mSharedPref.getString("SETTINGS_RINGTONE", DEFAULT_RINGTONE_URL);
     }
 
     public void setPushNotification(boolean value) {
@@ -90,4 +93,25 @@ public class UserPreference {
     public String getUser() {
         return mSharedPref.getString("USER_NAME", "");
     }
+
+    public String getRingtoneName() {
+        String current = getRingtone();
+        if (current.equals(DEFAULT_RINGTONE_URL)) {
+            return mWeakContext.get().getString(R.string.ringtone_default);
+        }
+        Ringtone ringtone = RingtoneManager.getRingtone(mWeakContext.get(), Uri.parse(current));
+        if (ringtone == null) {
+            return mWeakContext.get().getString(R.string.ringtone_default);
+        }
+        return ringtone.getTitle(mWeakContext.get());
+    }
+
+    public void setRingtone(String value) {
+        mSharedPref.edit().putString("SETTINGS_RINGTONE", value).apply();
+    }
+
+    public String getRingtone() {
+        return mSharedPref.getString("SETTINGS_RINGTONE", DEFAULT_RINGTONE_URL);
+    }
+
 }

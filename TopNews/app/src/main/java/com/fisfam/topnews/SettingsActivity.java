@@ -1,5 +1,6 @@
 package com.fisfam.topnews;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -58,6 +59,18 @@ public class SettingsActivity extends AppCompatActivity {
             onBackPressed();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Ringtone chosen result
+        if (requestCode == 999 && resultCode == Activity.RESULT_OK) {
+            Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            if (uri == null) return;
+            mUserPref.setRingtone(uri.toString());
+            ((TextView) findViewById(R.id.ringtone)).setText(mUserPref.getRingtoneName());
+        }
     }
 
     private void initToolbar() {
