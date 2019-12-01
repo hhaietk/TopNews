@@ -23,6 +23,8 @@ public class Articles implements Parcelable {
     @SerializedName("content")
     private String content;
 
+    public Articles() { }
+
     private Articles(Parcel parcel) {
         //read and set saved values from parcel
         title = parcel.readString();
@@ -42,7 +44,7 @@ public class Articles implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        //write all properties to the parcle
+        //write all properties to the parcel
         parcel.writeString(title);
         parcel.writeString(urlToImage);
         parcel.writeString(publishedAt);
@@ -107,12 +109,39 @@ public class Articles implements Parcelable {
     }
 
     public String getPublishedAt() {
-        //
         String string = publishedAt.replaceAll("[T|Z]", " ");
         return string;
     }
 
     public String getContent() {
         return content;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        this.urlToImage = urlToImage;
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        this.publishedAt = publishedAt;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 }

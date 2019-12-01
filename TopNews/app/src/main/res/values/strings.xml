@@ -73,7 +73,7 @@
 
     <!--ActivityNewsDetails string data -->
     <string name="remove_from_saved">News remove from Saved</string>
-    <string name="added_to_saved">News added to Saved</string>
+    <string name="added_to_saved">Article added to Saved</string>
     <string name="title_menu_refresh">Refresh</string>
 
     <!--ActivityNotification string data -->

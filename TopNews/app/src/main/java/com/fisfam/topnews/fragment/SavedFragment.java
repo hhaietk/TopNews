@@ -4,19 +4,30 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.fisfam.topnews.R;
+import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.pojo.Articles;
+import com.fisfam.topnews.room.AppDatabase;
+import com.fisfam.topnews.room.ArticlesEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SavedFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Toast.makeText(getContext(), "SaveFragment launched", Toast.LENGTH_LONG).show();
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = inflater.inflate(R.layout.fragment_saved, container, false);
+        initRecyclerView(rootView);
+        return rootView;
     }
 
     @Override
@@ -32,5 +43,34 @@ public class SavedFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    private void initRecyclerView(final View rootView) {
+        AppDatabase db = AppDatabase.getDb(getActivity());
+        List<ArticlesEntity> articlesList = db.articlesDao().getAllArticles();
+
+        List<Articles> articles = createArticlesFromEntity(articlesList);
+
+        RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_saved);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        ArticlesFromCategoryAdapter adapter = new ArticlesFromCategoryAdapter(articles, getActivity());
+        recyclerView.setAdapter(adapter);
+    }
+
+    private List<Articles> createArticlesFromEntity(final List<ArticlesEntity> articlesEntityList) {
+
+        List<Articles> articles = new ArrayList<>();
+
+        for (final ArticlesEntity articlesEntity : articlesEntityList) {
+            Articles a = new Articles();
+            a.setTitle(articlesEntity.getTitle());
+            a.setContent(articlesEntity.getContent());
+            a.setPublishedAt(articlesEntity.getPublishedAt());
+            a.setUrl(articlesEntity.getUrl());
+            a.setUrlToImage(articlesEntity.getUrlToImage());
+            articles.add(a);
+        }
+
+        return  articles;
     }
 }

@@ -57,7 +57,9 @@ public class ArticlesFromCategoryAdapter
         Articles currentItem = mItems.get(position);
         holder.title.setText(currentItem.getTitle());
         holder.date.setText(currentItem.getPublishedAt());
-        holder.source.setText(currentItem.getSource().getName());
+        if (currentItem.getSource() != null) {
+            holder.source.setText(currentItem.getSource().getName());
+        }
         if (mContext != null) {
             UiTools.displayImageThumb(mContext, holder.image, currentItem.getUrlToImage(), 0.5f);
         } else {

@@ -2,9 +2,10 @@ package com.fisfam.topnews.room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "articles")
+@Entity(tableName = "articles", indices = @Index(value = {"title"}, unique = true))
 public class ArticlesEntity {
 
     @PrimaryKey(autoGenerate = true)
@@ -33,6 +34,16 @@ public class ArticlesEntity {
 
     @ColumnInfo(name = "content")
     private String mContent;
+
+    public ArticlesEntity() {}
+
+    public ArticlesEntity(String publishedAt, String title, String url, String urlToImage, String content) {
+        mPublishedAt = publishedAt;
+        mTitle = title;
+        mUrl = url;
+        mUrlToImage = urlToImage;
+        mContent = content;
+    }
 
     public int getId() {
         return mId;
@@ -68,5 +79,41 @@ public class ArticlesEntity {
 
     public String getContent() {
         return mContent;
+    }
+
+    public void setId(int id) {
+        mId = id;
+    }
+
+    public void setSourceName(String source) {
+        mSourceName = source;
+    }
+
+    public void setAuthor(String author) {
+        mAuthor = author;
+    }
+
+    public void setTitle(String title) {
+        mTitle = title;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public void setUrl(String url) {
+        mUrl = url;
+    }
+
+    public void setUrlToImage(String urlToImage) {
+        mUrlToImage = urlToImage;
+    }
+
+    public void setPublishedAt(String publishedAt) {
+        mPublishedAt = publishedAt;
+    }
+
+    public void setContent(String content) {
+        mContent = content;
     }
 }

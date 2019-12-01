@@ -23,7 +23,7 @@ Thumbs.db
 
 # Android Studio
 *.iml
-.idea
+.idea/
 #.idea/workspace.xml - remove # and delete .idea if it better suit your needs.
 .gradle
 build/
@@ -34,3 +34,10 @@ output.json
 #NDK
 obj/
 .externalNativeBuild
+
+TopNews/app/debug/
+TopNews/app/google-services.json
+TopNews/app/release/
+TopNews/app/schemas/
+TopNews/.idea/codeStyles/Project.xml
+TopNews/.idea/misc.xml

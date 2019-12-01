@@ -16,12 +16,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.widget.NestedScrollView;
 
 import com.fisfam.topnews.pojo.Articles;
+import com.fisfam.topnews.room.AppDatabase;
+import com.fisfam.topnews.room.ArticlesEntity;
 import com.fisfam.topnews.utils.UiTools;
+import com.google.android.material.snackbar.Snackbar;
 
 public class ArticlesDetailsActivity extends AppCompatActivity {
 
     private static final String EXTRA_ARTICLES = "Articles";
     private Articles mArticles;
+    private View mRootView;
 
     public static void open(final Context context, final Articles articles) {
         Intent i = new Intent(context, ArticlesDetailsActivity.class);
@@ -34,6 +38,7 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles_details);
 
+        mRootView = findViewById(R.id.activity_article_details);
         collectArticles();
         initToolbar();
         initUiComponents();
@@ -42,7 +47,6 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_activity_news_details, menu);
-        MenuItem menu_saved = menu.findItem(R.id.action_saved);
         return true;
     }
 
@@ -53,7 +57,7 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.action_saved:
-                // TODO: save to database
+                saveArticleToDb(this);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -62,7 +66,22 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
     private void collectArticles() {
         final Intent i = getIntent();
         mArticles = i.getParcelableExtra(EXTRA_ARTICLES);
+    }
 
+    private void saveArticleToDb(final Context context) {
+        AppDatabase db = AppDatabase.getDb(context);
+
+        ArticlesEntity articlesEntity = new ArticlesEntity(
+                mArticles.getPublishedAt(),
+                mArticles.getTitle(),
+                mArticles.getUrl(),
+                mArticles.getUrlToImage(),
+                mArticles.getContent()
+        );
+
+        db.articlesDao().insertArticle(articlesEntity);
+
+        Snackbar.make(mRootView, R.string.added_to_saved, Snackbar.LENGTH_SHORT).show();
     }
 
     private void initToolbar() {
