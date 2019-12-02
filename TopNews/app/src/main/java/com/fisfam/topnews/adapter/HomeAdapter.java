@@ -31,7 +31,7 @@ import java.util.List;
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final String TAG = HomeAdapter.class.getSimpleName();
-    public static final String EXTRA_CATEGORY = "Category";
+    private final String EXTRA_CATEGORY = "Category";
     private static final int VIEW_TYPE_ARTICLES = 100;
     private static final int VIEW_TYPE_CATEGORY = 200;
     private static final int VIEW_TYPE_SECTION = 300;
@@ -149,7 +149,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private ImageView image;
         private View rippleLayout;
 
-        public ItemArticlesViewHolder(@NonNull View v) {
+        ItemArticlesViewHolder(@NonNull View v) {
             super(v);
             title = v.findViewById(R.id.article_title);
             date = v.findViewById(R.id.date);
@@ -162,7 +162,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class ItemCategoryViewHolder extends RecyclerView.ViewHolder {
         private RecyclerView recyclerView;
 
-        public ItemCategoryViewHolder(@NonNull View v) {
+        ItemCategoryViewHolder(@NonNull View v) {
             super(v);
             recyclerView = v.findViewById(R.id.category_rv_for_home_fragment);
             // TODO: SnapHelper = smooth scroll
@@ -172,7 +172,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class ItemSectionViewHolder extends RecyclerView.ViewHolder {
         private TextView title;
 
-        public ItemSectionViewHolder(View v) {
+        ItemSectionViewHolder(View v) {
             super(v);
             title = v.findViewById(R.id.section_title);
         }
@@ -200,7 +200,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     //Add default snap to center effect
-    public void attachSnapHelper (RecyclerView recyclerView){
+    private void attachSnapHelper (RecyclerView recyclerView){
         SnapHelper snapHelper = new LinearSnapHelper();
         recyclerView.setOnFlingListener(null);
         snapHelper.attachToRecyclerView(recyclerView);
