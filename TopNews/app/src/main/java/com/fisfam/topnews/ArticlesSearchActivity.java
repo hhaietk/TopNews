@@ -11,9 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +22,8 @@ import com.fisfam.topnews.pojo.News;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fisfam.topnews.retrofit.NewsService;
+import com.fisfam.topnews.retrofit.NewsServiceGenerator;
 import com.fisfam.topnews.utils.UiTools;
 import retrofit2.Call;
 import retrofit2.Callback;

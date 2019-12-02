@@ -1,4 +1,4 @@
-package com.fisfam.topnews;
+package com.fisfam.topnews.retrofit;
 
 import com.fisfam.topnews.pojo.News;
 

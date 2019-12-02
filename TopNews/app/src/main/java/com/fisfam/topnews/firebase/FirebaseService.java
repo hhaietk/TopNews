@@ -1,4 +1,4 @@
-package com.fisfam.topnews;
+package com.fisfam.topnews.firebase;
 
 import android.util.Log;
 import androidx.annotation.NonNull;

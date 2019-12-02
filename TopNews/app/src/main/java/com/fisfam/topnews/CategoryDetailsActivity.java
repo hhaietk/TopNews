@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.News;
+import com.fisfam.topnews.retrofit.NewsService;
+import com.fisfam.topnews.retrofit.NewsServiceGenerator;
 import com.fisfam.topnews.utils.NetworkCheck;
 import com.fisfam.topnews.utils.UiTools;
 

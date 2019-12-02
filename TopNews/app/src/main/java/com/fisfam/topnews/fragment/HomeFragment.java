@@ -18,8 +18,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fisfam.topnews.ArticlesDetailsActivity;
-import com.fisfam.topnews.NewsService;
-import com.fisfam.topnews.NewsServiceGenerator;
+import com.fisfam.topnews.retrofit.NewsService;
+import com.fisfam.topnews.retrofit.NewsServiceGenerator;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.UserPreference;
 import com.fisfam.topnews.adapter.HomeAdapter;
