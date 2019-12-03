@@ -32,7 +32,6 @@ public class NewsModel {
                                             final String keyword, final int pageSize, final int page) {
 
         Call<News> news = mNewsService.getTopHeadlines(country, category, sources, keyword, pageSize, page);
-        List<Articles> articles = new ArrayList<>();
 
         news.enqueue(new Callback<News>() {
             @Override
