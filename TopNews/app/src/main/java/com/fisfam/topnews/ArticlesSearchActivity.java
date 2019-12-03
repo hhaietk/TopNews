@@ -1,7 +1,6 @@
 package com.fisfam.topnews;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,17 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
 import com.fisfam.topnews.pojo.Articles;
-import com.fisfam.topnews.pojo.News;
+import com.fisfam.topnews.utils.UiTools;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.fisfam.topnews.retrofit.NewsService;
-import com.fisfam.topnews.retrofit.NewsServiceGenerator;
-import com.fisfam.topnews.utils.UiTools;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class ArticlesSearchActivity extends AppCompatActivity {
     private EditText mEditText;
@@ -92,7 +84,7 @@ public class ArticlesSearchActivity extends AppCompatActivity {
     }
 
     private void requestData(String query) {
-        UserPreference userPrefs = new UserPreference(this);
+        /*UserPreference userPrefs = new UserPreference(this);
         NewsService newsService = NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
         Call<News> newsCall = newsService.getTopHeadlines(
                 userPrefs.getCountryCode(), null, null, query, 100, 0);
@@ -120,7 +112,7 @@ public class ArticlesSearchActivity extends AppCompatActivity {
             public void onFailure(Call<News> call, Throwable t) {
                 Log.e(TAG, "onFailure: " + t.toString());
             }
-        });
+        });*/
     }
 
     private void initRecyclerView() {

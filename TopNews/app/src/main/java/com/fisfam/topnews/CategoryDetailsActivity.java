@@ -1,15 +1,12 @@
 package com.fisfam.topnews;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -19,8 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.News;
-import com.fisfam.topnews.retrofit.NewsService;
-import com.fisfam.topnews.retrofit.NewsServiceGenerator;
 import com.fisfam.topnews.utils.NetworkCheck;
 import com.fisfam.topnews.utils.UiTools;
 
@@ -28,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CategoryDetailsActivity extends AppCompatActivity {
     private static final String TAG = CategoryDetailsActivity.class.getSimpleName();
@@ -62,7 +55,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
     }
 
     private void requestData(){
-        mUserPrefs = new UserPreference(this);
+        /*mUserPrefs = new UserPreference(this);
         NewsService newsService =
                 NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
         mCallNews = newsService.getTopHeadlines(
@@ -92,7 +85,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
                     handleFailRequest();
                 }
             }
-        });
+        });*/
 
     }
 

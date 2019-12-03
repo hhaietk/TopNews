@@ -2,7 +2,6 @@ package com.fisfam.topnews.retrofit;
 
 import android.util.Log;
 
-import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -17,7 +16,8 @@ public class NewsServiceGenerator {
 
     private static Retrofit.Builder builder = new Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create());
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
     private static Retrofit retrofit = builder.build();
 
