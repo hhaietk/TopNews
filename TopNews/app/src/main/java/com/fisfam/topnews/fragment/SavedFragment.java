@@ -46,6 +46,8 @@ public class SavedFragment extends Fragment {
     }
 
     private void initRecyclerView(final View rootView) {
+
+        // Get the saved articles from DB
         AppDatabase db = AppDatabase.getDb(getActivity());
         List<ArticlesEntity> articlesList = db.articlesDao().getAllArticles();
 
@@ -53,6 +55,7 @@ public class SavedFragment extends Fragment {
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_saved);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        // TODO: consider changing this shitty named adapter from Long
         ArticlesFromCategoryAdapter adapter = new ArticlesFromCategoryAdapter(articles, getActivity());
         recyclerView.setAdapter(adapter);
     }

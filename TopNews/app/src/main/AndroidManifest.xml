@@ -23,7 +23,7 @@
         </service>
 
         <activity
-            android:name=".ArticlesSearchActivity"
+            android:name=".SearchActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"/>
         <activity
             android:name=".CategoryDetailsActivity"

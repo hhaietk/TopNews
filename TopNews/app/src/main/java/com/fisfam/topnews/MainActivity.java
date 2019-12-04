@@ -21,9 +21,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fisfam.topnews.fragment.CategoryFragment;
 import com.fisfam.topnews.fragment.HomeFragment;
 import com.fisfam.topnews.fragment.SavedFragment;
-import com.fisfam.topnews.fragment.TopicFragment;
 import com.fisfam.topnews.utils.UiTools;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         } else if(menu_id == R.id.action_choose_language){
             chooseCountry();
         } else if (menu_id == R.id.action_search) {
-            Intent intent = new Intent(MainActivity.this, ArticlesSearchActivity.class);
+            Intent intent = new Intent(MainActivity.this, SearchActivity.class);
             startActivity(intent);
         } else if (menu_id == R.id.action_notification) {
             //TODO: open notification
@@ -205,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
     }
 
-    private Fragment mHomeFragment, mSavedFragment, mTopicFragment;
+    private Fragment mHomeFragment, mSavedFragment, mCategoryFragment;
 
     public void onDrawerMenuClick(@NotNull View view) {
 
@@ -219,10 +219,10 @@ public class MainActivity extends AppCompatActivity {
                 fragment = mHomeFragment;
                 title = getString(R.string.title_menu_home);
                 break;
-            case R.id.nav_menu_topic:
-                if (mTopicFragment == null) mTopicFragment = new TopicFragment();
-                fragment = mTopicFragment;
-                title = getString(R.string.title_menu_topic);
+            case R.id.nav_menu_category:
+                if (mCategoryFragment == null) mCategoryFragment = new CategoryFragment();
+                fragment = mCategoryFragment;
+                title = getString(R.string.title_menu_category);
                 break;
             /*case R.id.nav_menu_notif:
                 ActivityNotification.navigate(this);

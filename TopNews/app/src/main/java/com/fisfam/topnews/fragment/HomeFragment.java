@@ -138,7 +138,6 @@ public class HomeFragment extends Fragment {
         mViewModel.getNews(mUserPrefs.getCountryCode(), null, null, null, 10, 0);
     }
 
-    //TODO: maybe move handleFailRequest and showFailedView to UiTools
     private void handleFailRequest() {
         showRefreshing(false);
         if (NetworkCheck.isNetworkAvailable(getActivity())){

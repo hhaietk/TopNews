@@ -53,7 +53,7 @@
     <string name="logout_title">Logout</string>
     <string name="login_title">Login</string>
     <string name="title_menu_home">Home</string>
-    <string name="title_menu_topic">Topic</string>
+    <string name="title_menu_category">Category</string>
     <string name="title_menu_notif">Notification</string>
     <string name="title_menu_saved">Saved</string>
     <string name="title_menu_more">More Apps</string>

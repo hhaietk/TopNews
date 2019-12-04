@@ -70,7 +70,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             // only VIEW_TYPE_CATEGORY left
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_section_topic_home, parent, false);
+                    .inflate(R.layout.item_section_category_home, parent, false);
             vh = new ItemCategoryViewHolder(v);
         }
 

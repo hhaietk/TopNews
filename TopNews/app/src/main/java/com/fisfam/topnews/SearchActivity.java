@@ -21,13 +21,13 @@ import com.fisfam.topnews.utils.UiTools;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArticlesSearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
     private EditText mEditText;
     private RecyclerView mRecyclerView;
     private View mNoItemFoundedView;
     private ArticlesFromCategoryAdapter mAdapter;
     private List<Articles> mArticlesList = new ArrayList<>();
-    private static final String TAG = ArticlesSearchActivity.class.getSimpleName();
+    private static final String TAG = SearchActivity.class.getSimpleName();
 
 
     @Override
