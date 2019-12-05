@@ -45,7 +45,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             new Category(R.drawable.ic_technology_category, "Technology")
     ));
 
-    private List mItems = new ArrayList<>();
+    private List<Object> mItems = new ArrayList<>();
     private OnItemClickListener mOnItemClickListener;
     private WeakReference<Context> mContext;
 

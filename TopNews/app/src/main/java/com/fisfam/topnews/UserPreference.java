@@ -5,6 +5,9 @@ import android.content.SharedPreferences;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.ref.WeakReference;
 
@@ -13,10 +16,12 @@ public class UserPreference {
     private static final String DEFAULT_RINGTONE_URL = "content://settings/system/notification_sound";
     private SharedPreferences mSharedPref;
     private WeakReference<Context> mWeakContext;
+    private FirebaseAuth mAuth;
 
     public UserPreference(final Context context) {
         mWeakContext = new WeakReference<>(context);
         mSharedPref = context.getSharedPreferences("MAIN_PREF", Context.MODE_PRIVATE);
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public boolean getVibration() {
@@ -51,8 +56,13 @@ public class UserPreference {
         mSharedPref.edit().putBoolean("SETTINGS_VIBRATION", value).apply();
     }
 
-    public void setCountry(String value) {
-        mSharedPref.edit().putString("SETTINGS_COUNTRY", value).apply();
+    public void setCountry(final String country) {
+        mSharedPref.edit().putString("SETTINGS_COUNTRY", country).apply();
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference ref = firestore.collection("users").document(mAuth.getCurrentUser().getUid());
+
+        ref.update("country", country);
     }
 
     public String getCountry() {

@@ -27,6 +27,8 @@ import com.fisfam.topnews.utils.UiTools;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
@@ -37,6 +39,8 @@ public class SettingsActivity extends AppCompatActivity {
     private String[] mThemes;
     private UserPreference mUserPref;
     private TextView mTvTheme;
+
+    private FirebaseAuth mAuth;
 
     static void open(final Context context) {
         final Intent i = new Intent(context, SettingsActivity.class);
@@ -49,6 +53,8 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mUserPref = new UserPreference(this);
+        mAuth = FirebaseAuth.getInstance();
+
         initToolbar();
         initUiComponents();
     }
@@ -91,6 +97,20 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void initUiComponents() {
         mParentView = findViewById(R.id.parent_view_settings);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        TextView loginLogoutText = findViewById(R.id.settings_login_logout);
+
+        if (user != null) {
+            // user is logged in
+            ((TextView)findViewById(R.id.settings_name)).setText(user.getDisplayName());
+            ((TextView)findViewById(R.id.settings_email)).setText(user.getEmail());
+            loginLogoutText.setText(getString(R.string.logout_title));
+        } else {
+            loginLogoutText.setText(getString(R.string.login_title));
+        }
+
+
         SwitchCompat switchPushNotification = findViewById(R.id.switch_push_notif);
         SwitchCompat switchVibrate = findViewById(R.id.switch_vibrate);
         SwitchCompat switchImageCache = findViewById(R.id.switch_image_cache);

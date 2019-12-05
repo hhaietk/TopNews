@@ -189,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
         mLoginLogout.setOnClickListener(v -> {
             if (mLoginLogout.getText().toString().equals(getString(R.string.login_title))) {
                 LoginActivity.open(this);
+                mLoginLogout.setText(getString(R.string.logout_title));
             } else {
+                mLoginLogout.setText(getString(R.string.login_title));
                 mName.setText("");
                 mAuth.signOut();
                 mUserPref.setUser("");

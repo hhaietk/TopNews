@@ -23,6 +23,7 @@ import com.fisfam.topnews.utils.LoginTool;
 import com.fisfam.topnews.utils.UiTools;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -123,7 +124,17 @@ public class RegisterActivity extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
 
                     if (task.isSuccessful()) {
+
                         showDialogSuccess(getString(R.string.register_success));
+
+                        // update user name after user successfully created
+                        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(name)
+                                .build();
+
+                        // TODO: do we need Complete/Success Listener?
+                        mAuth.getCurrentUser().updateProfile(profileUpdate);
+
                     } else {
                         showDialogFailed(getString(R.string.failed_text));
                     }
@@ -131,6 +142,8 @@ public class RegisterActivity extends AppCompatActivity {
                     showLoading(false);
 
                 });
+
+
     }
 
     private boolean isValueValid(final String name, final String email, final String password) {
