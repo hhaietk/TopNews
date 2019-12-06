@@ -1,6 +1,7 @@
 package com.fisfam.topnews;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,28 +15,44 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.adapter.ArticlesListAdapter;
+import com.fisfam.topnews.model.NewsModel;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.utils.UiTools;
+import com.fisfam.topnews.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SearchActivity extends AppCompatActivity {
     private EditText mEditText;
     private RecyclerView mRecyclerView;
     private View mNoItemFoundedView;
-    private ArticlesFromCategoryAdapter mAdapter;
+    private ArticlesListAdapter mAdapter;
     private List<Articles> mArticlesList = new ArrayList<>();
     private static final String TAG = SearchActivity.class.getSimpleName();
 
+    UserPreference mUserPrefs;
+    private NewsViewModel mViewModel;
+    private CompositeDisposable mDisposables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        mUserPrefs = new UserPreference(this);
+        mViewModel = new NewsViewModel(new NewsModel());
+        mDisposables = new CompositeDisposable();
+
         initUIComponents();
         UiTools.setSmartSystemBar(this);
+        subscribeNews();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -72,53 +89,55 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
+    private void subscribeNews() {
+
+        Disposable d = mViewModel.getArticlesObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(articles -> {
+                    if (articles.size() == 0) {
+                        mRecyclerView.setVisibility(View.INVISIBLE);
+                        mNoItemFoundedView.setVisibility(View.VISIBLE);
+                        ((TextView) findViewById(R.id.failed_message)).setText(R.string.no_results);
+                    } else {
+                        for (Articles a : articles){
+                            mAdapter.addArticles(a);
+                        }
+                        mRecyclerView.setVisibility(View.VISIBLE);
+                        mNoItemFoundedView.setVisibility(View.GONE);
+                    }
+                });
+
+        Disposable d2 = mViewModel.getErrorObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(error -> {
+                    Log.e(TAG, "subscribeNews: error = " + error);
+
+                });
+
+        mDisposables.addAll(d, d2);
+    }
+
     private void performSearch() {
         mAdapter.resetArticles(); //clear the articles from the last search
         String query = mEditText.getText().toString().toLowerCase().trim();
-        if (query == null || query.isEmpty() ) {
+        if (query.isEmpty() ) {
             Toast.makeText(this, R.string.please_enter_text, Toast.LENGTH_SHORT).show();
         } else {
-            requestData(query);
+            requestNews(query);
         }
 
     }
 
-    private void requestData(String query) {
-        /*UserPreference userPrefs = new UserPreference(this);
-        NewsService newsService = NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
-        Call<News> newsCall = newsService.getTopHeadlines(
-                userPrefs.getCountryCode(), null, null, query, 100, 0);
-        newsCall.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(Call<News> call, Response<News> response) {
-                News news = response.body();
-
-                if (news.getTotalResults() == 0) {
-                    mRecyclerView.setVisibility(View.INVISIBLE);
-                    mNoItemFoundedView.setVisibility(View.VISIBLE);
-                    //Log.d(TAG, "NO NEWS");
-                    return;
-                }
-
-                for (Articles articles : news.getArticles()){
-                    mAdapter.addArticles(articles);
-                    //Log.d(TAG, "onResponse: "+ articles.toString());
-                }
-                mRecyclerView.setVisibility(View.VISIBLE);
-                mNoItemFoundedView.setVisibility(View.GONE);
-            }
-
-            @Override
-            public void onFailure(Call<News> call, Throwable t) {
-                Log.e(TAG, "onFailure: " + t.toString());
-            }
-        });*/
+    private void requestNews(final String query) {
+        mViewModel.getNews(mUserPrefs.getCountryCode(), null, null, query, 50, 0);
     }
 
     private void initRecyclerView() {
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ArticlesFromCategoryAdapter(mArticlesList, this);
+        mAdapter = new ArticlesListAdapter(mArticlesList, this);
         mRecyclerView.setAdapter(mAdapter);
     }
 }

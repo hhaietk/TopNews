@@ -23,6 +23,8 @@ public class Articles implements Parcelable {
     @SerializedName("content")
     private String content;
 
+    private int isSaved = 0;
+
     public Articles() { }
 
     private Articles(Parcel parcel) {
@@ -35,6 +37,7 @@ public class Articles implements Parcelable {
         description = parcel.readString();
         url = parcel.readString();
         author = parcel.readString();
+        isSaved = parcel.readInt();
     }
 
     @Override
@@ -53,6 +56,7 @@ public class Articles implements Parcelable {
         parcel.writeString(description);
         parcel.writeString(url);
         parcel.writeString(author);
+        parcel.writeInt(isSaved);
 
     }
 
@@ -113,6 +117,10 @@ public class Articles implements Parcelable {
         return string;
     }
 
+    public int getIsSaved() {
+        return isSaved;
+    }
+
     public String getContent() {
         return content;
     }
@@ -143,5 +151,9 @@ public class Articles implements Parcelable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setIsSaved(int saved) {
+        isSaved = saved;
     }
 }

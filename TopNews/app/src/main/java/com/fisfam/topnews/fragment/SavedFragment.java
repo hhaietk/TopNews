@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fisfam.topnews.R;
-import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.adapter.ArticlesListAdapter;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.room.AppDatabase;
 import com.fisfam.topnews.room.ArticlesEntity;
@@ -55,8 +55,7 @@ public class SavedFragment extends Fragment {
 
         RecyclerView recyclerView = rootView.findViewById(R.id.recyclerView_saved);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        // TODO: consider changing this shitty named adapter from Long
-        ArticlesFromCategoryAdapter adapter = new ArticlesFromCategoryAdapter(articles, getActivity());
+        ArticlesListAdapter adapter = new ArticlesListAdapter(articles, getActivity());
         recyclerView.setAdapter(adapter);
     }
 
@@ -71,6 +70,7 @@ public class SavedFragment extends Fragment {
             a.setPublishedAt(articlesEntity.getPublishedAt());
             a.setUrl(articlesEntity.getUrl());
             a.setUrlToImage(articlesEntity.getUrlToImage());
+            a.setIsSaved(articlesEntity.getIsSaved());
             articles.add(a);
         }
 

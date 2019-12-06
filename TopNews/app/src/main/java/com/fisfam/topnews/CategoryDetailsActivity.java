@@ -2,7 +2,6 @@ package com.fisfam.topnews;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,30 +14,27 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.adapter.ArticlesListAdapter;
 import com.fisfam.topnews.model.NewsModel;
 import com.fisfam.topnews.pojo.Articles;
-import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.utils.NetworkCheck;
 import com.fisfam.topnews.utils.UiTools;
+import com.fisfam.topnews.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fisfam.topnews.viewmodel.NewsViewModel;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
 
 public class CategoryDetailsActivity extends AppCompatActivity {
 
     private static final String TAG = CategoryDetailsActivity.class.getSimpleName();
     private String mCategory;
     private RecyclerView mRecyclerView;
-    private ArticlesFromCategoryAdapter mAdapter;
+    private ArticlesListAdapter mAdapter;
     private List<Articles> mItems = new ArrayList<>();
     private UserPreference mUserPrefs;
     private NewsViewModel mViewModel;
@@ -102,7 +98,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
 
     private void requestNews() {
         showFailedView(false, "", R.drawable.img_failed);
-        mViewModel.getNews(mUserPrefs.getCountryCode(), mCategory.toLowerCase(), null, null, 10, 0);
+        mViewModel.getNews(mUserPrefs.getCountryCode(), mCategory.toLowerCase(), null, null, 50, 0);
     }
 
 
@@ -110,7 +106,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.category_articles_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ArticlesFromCategoryAdapter(mItems,this);
+        mAdapter = new ArticlesListAdapter(mItems,this);
         mRecyclerView.setAdapter(mAdapter);
     }
 

@@ -17,6 +17,7 @@ import androidx.core.widget.NestedScrollView;
 
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.room.AppDatabase;
+import com.fisfam.topnews.room.ArticlesDao;
 import com.fisfam.topnews.room.ArticlesEntity;
 import com.fisfam.topnews.utils.UiTools;
 import com.google.android.material.snackbar.Snackbar;
@@ -24,8 +25,13 @@ import com.google.android.material.snackbar.Snackbar;
 public class ArticlesDetailsActivity extends AppCompatActivity {
 
     private static final String EXTRA_ARTICLES = "Articles";
+    private static final int NOT_SAVED = 0;
+    private static final int SAVED = 1;
+
     private Articles mArticles;
     private View mRootView;
+
+    private ArticlesDao mDb;
 
     public static void open(final Context context, final Articles articles) {
         Intent i = new Intent(context, ArticlesDetailsActivity.class);
@@ -39,6 +45,8 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_articles_details);
 
         mRootView = findViewById(R.id.activity_article_details);
+        mDb = AppDatabase.getDb(this).articlesDao();
+
         collectArticles();
         initToolbar();
         initUiComponents();
@@ -46,7 +54,15 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
         getMenuInflater().inflate(R.menu.menu_activity_news_details, menu);
+        MenuItem savedItem = menu.findItem(R.id.action_saved);
+
+        if (mArticles.getIsSaved() == SAVED) {
+            savedItem.setIcon(R.drawable.ic_bookmark_saved);
+        } else {
+            savedItem.setIcon(R.drawable.ic_bookmark);
+        }
         return true;
     }
 
@@ -57,7 +73,17 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.action_saved:
-                saveArticleToDb(this);
+                int msg;
+                if (mArticles.getIsSaved() == SAVED) {
+                    deleteArticleFromDb();
+                    msg = R.string.remove_from_saved;
+                } else {
+                    saveArticleToDb();
+                    msg = R.string.added_to_saved;
+                }
+
+                Snackbar.make(mRootView, msg, Snackbar.LENGTH_SHORT).show();
+                invalidateOptionsMenu();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -68,26 +94,30 @@ public class ArticlesDetailsActivity extends AppCompatActivity {
         mArticles = i.getParcelableExtra(EXTRA_ARTICLES);
     }
 
-    private void saveArticleToDb(final Context context) {
-        AppDatabase db = AppDatabase.getDb(context);
+    private void deleteArticleFromDb() {
 
+        mArticles.setIsSaved(NOT_SAVED);
+        mDb.deleteArticleWithTitle(mArticles.getTitle());
+    }
+
+    private void saveArticleToDb() {
+
+        mArticles.setIsSaved(SAVED);
         ArticlesEntity articlesEntity = new ArticlesEntity(
                 mArticles.getPublishedAt(),
                 mArticles.getTitle(),
                 mArticles.getUrl(),
                 mArticles.getUrlToImage(),
-                mArticles.getContent()
+                mArticles.getContent(),
+                mArticles.getIsSaved()
         );
 
-        db.articlesDao().insertArticle(articlesEntity);
-
-        Snackbar.make(mRootView, R.string.added_to_saved, Snackbar.LENGTH_SHORT).show();
+        mDb.insertArticle(articlesEntity);
     }
 
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar_articles_details);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        //toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.colorTextAction), PorterDuff.Mode.SRC_ATOP);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

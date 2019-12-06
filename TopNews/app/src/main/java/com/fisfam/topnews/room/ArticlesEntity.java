@@ -35,14 +35,19 @@ public class ArticlesEntity {
     @ColumnInfo(name = "content")
     private String mContent;
 
+    @ColumnInfo(name = "isSaved")
+    private int mIsSaved;
+
     public ArticlesEntity() {}
 
-    public ArticlesEntity(String publishedAt, String title, String url, String urlToImage, String content) {
+    public ArticlesEntity(String publishedAt, String title, String url,
+                          String urlToImage, String content, int saved) {
         mPublishedAt = publishedAt;
         mTitle = title;
         mUrl = url;
         mUrlToImage = urlToImage;
         mContent = content;
+        mIsSaved = saved;
     }
 
     public int getId() {
@@ -81,6 +86,10 @@ public class ArticlesEntity {
         return mContent;
     }
 
+    public int getIsSaved() {
+        return mIsSaved;
+    }
+
     public void setId(int id) {
         mId = id;
     }
@@ -115,5 +124,9 @@ public class ArticlesEntity {
 
     public void setContent(String content) {
         mContent = content;
+    }
+
+    public void setIsSaved(int isSaved) {
+        mIsSaved = isSaved;
     }
 }

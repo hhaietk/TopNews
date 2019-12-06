@@ -135,7 +135,7 @@ public class HomeFragment extends Fragment {
     private void requestNews() {
         showRefreshing(true);
         showFailedView(false, "", R.drawable.img_failed);
-        mViewModel.getNews(mUserPrefs.getCountryCode(), null, null, null, 10, 0);
+        mViewModel.getNews(mUserPrefs.getCountryCode(), null, null, null, 50, 0);
     }
 
     private void handleFailRequest() {
