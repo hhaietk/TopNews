@@ -8,97 +8,105 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fisfam.topnews.adapter.ArticlesFromCategoryAdapter;
+import com.fisfam.topnews.adapter.ArticlesListAdapter;
+import com.fisfam.topnews.model.NewsModel;
 import com.fisfam.topnews.pojo.Articles;
-import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.utils.NetworkCheck;
 import com.fisfam.topnews.utils.UiTools;
+import com.fisfam.topnews.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class CategoryDetailsActivity extends AppCompatActivity {
+
     private static final String TAG = CategoryDetailsActivity.class.getSimpleName();
-    private Toolbar mToolbar;
     private String mCategory;
     private RecyclerView mRecyclerView;
-    private ArticlesFromCategoryAdapter mAdapter;
+    private ArticlesListAdapter mAdapter;
     private List<Articles> mItems = new ArrayList<>();
-    private Call<News> mCallNews;
     private UserPreference mUserPrefs;
+    private NewsViewModel mViewModel;
+    private CompositeDisposable mDisposables;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mCategory = getIntent().getStringExtra("Category");
         setContentView(R.layout.activity_category_details);
+
+        mUserPrefs = new UserPreference(this);
+        mCategory = getIntent().getStringExtra("Category");
+        mDisposables = new CompositeDisposable();
+        mViewModel = new NewsViewModel(new NewsModel());
+
         initToolbar();
-        requestData();
         initRecyclerView();
+        subscribeNews();
+        requestNews();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mDisposables.dispose();
     }
 
     private void initToolbar() {
-        mToolbar = findViewById(R.id.toolbar);
-        mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-        setSupportActionBar(mToolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        setSupportActionBar(toolbar);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle(mCategory);
         actionBar.setDisplayHomeAsUpEnabled(true);
         UiTools.setSmartSystemBar(this);
     }
 
-    private void requestData(){
-        mUserPrefs = new UserPreference(this);
-        NewsService newsService =
-                NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
-        mCallNews = newsService.getTopHeadlines(
-                mUserPrefs.getCountryCode(), mCategory.toLowerCase(), null, null, 15, 0);
-        mCallNews.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(@Nullable Call<News> call, @NonNull Response<News> response) {
-                News news = response.body();
+    private void subscribeNews() {
 
-                if (news == null) {
-                    Log.e(TAG, "onResponse: No news is good news");
+        Disposable d = mViewModel.getArticlesObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(articles -> {
+                    for (final Articles a : articles) {
+                        mAdapter.addArticles(a);
+                    }
+                });
+
+        Disposable d2 = mViewModel.getErrorObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(error -> {
+                    Log.e(TAG, "subscribeNews: error = " + error);
                     handleFailRequest();
-                    return;
-                }
+                });
 
-                for (final Articles articles : news.getArticles()) {
-                    mAdapter.addArticles(articles);
-                    Log.d(TAG, "Category:" + mCategory + "" + articles.getTitle());
-                }
-
-            }
-
-            @Override
-            public void onFailure(@Nullable Call<News> call, @NonNull Throwable t) {
-                Log.e(TAG, t.toString());
-                if (!call.isCanceled()) {
-                    handleFailRequest();
-                }
-            }
-        });
-
+        mDisposables.addAll(d, d2);
     }
+
+    private void requestNews() {
+        showFailedView(false, "", R.drawable.img_failed);
+        mViewModel.getNews(mUserPrefs.getCountryCode(), mCategory.toLowerCase(), null, null, 50, 0);
+    }
+
 
     private void initRecyclerView() {
         mRecyclerView = findViewById(R.id.category_articles_recyclerview);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter = new ArticlesFromCategoryAdapter(mItems,this);
+        mAdapter = new ArticlesListAdapter(mItems,this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -131,7 +139,7 @@ public class CategoryDetailsActivity extends AppCompatActivity {
             mRecyclerView.setVisibility(View.VISIBLE);
             view_failed.setVisibility(View.GONE);
         }
-        findViewById(R.id.failed_retry).setOnClickListener(view -> requestData());
+        findViewById(R.id.failed_retry).setOnClickListener(view -> requestNews());
     }
 
 

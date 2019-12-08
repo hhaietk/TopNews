@@ -66,6 +66,7 @@
                     android:layout_marginRight="@dimen/spacing_large"
                     android:layout_marginTop="@dimen/spacing_middle"
                     android:autoLink="all"
+                    android:textColorLink="@color/colorTextAction"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
             </LinearLayout>

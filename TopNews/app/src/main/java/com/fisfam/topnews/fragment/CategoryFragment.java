@@ -22,20 +22,17 @@ import com.fisfam.topnews.pojo.Category;
 
 import static com.fisfam.topnews.adapter.HomeAdapter.CATEGORY_LIST;
 
-public class TopicFragment extends Fragment {
+public class CategoryFragment extends Fragment {
 
-    private static final String TAG = TopicFragment.class.getSimpleName();
     private View mRootView;
     private ShimmerFrameLayout mShimmerFrameLayout;
     private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private CountDownTimer mTimer;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_topic, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_category, container, false);
         initUiComponents();
         startShimmerScreen();
         return mRootView;
@@ -61,12 +58,12 @@ public class TopicFragment extends Fragment {
     }
 
     private void initUiComponents() {
-        mShimmerFrameLayout =mRootView.findViewById(R.id.shimmer_topic);
+        mShimmerFrameLayout =mRootView.findViewById(R.id.shimmer_category);
 
-        mRecyclerView = mRootView.findViewById(R.id.category_rv_for_topicfragment);
+        mRecyclerView = mRootView.findViewById(R.id.category_rv_for_categoryfragment);
         mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this.getActivity());
-        mAdapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
+        CategoryAdapter adapter = new CategoryAdapter(CATEGORY_LIST, new CategoryAdapter.OnCategoryItemClickListener() {
             @Override
             public void onItemClick(Category category) {
                 Intent intent = new Intent(getContext(), CategoryDetailsActivity.class);
@@ -74,8 +71,8 @@ public class TopicFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(adapter);
 
     }
 

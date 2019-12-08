@@ -15,7 +15,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDb(Context context) {
         if (INSTANCE == null) {
             INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "news-database")
-                    //TODO: check if the main thread queries is necessary
                     .allowMainThreadQueries()
                     .fallbackToDestructiveMigration()
                     .build();
