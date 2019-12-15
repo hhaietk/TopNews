@@ -19,13 +19,13 @@ import com.fisfam.topnews.utils.UiTools;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-public class ArticlesFromCategoryAdapter
-        extends RecyclerView.Adapter<ArticlesFromCategoryAdapter.ArticlesFromCategoryViewHolder> {
-    private static final String TAG = ArticlesFromCategoryAdapter.class.getSimpleName();
+public class ArticlesListAdapter
+        extends RecyclerView.Adapter<ArticlesListAdapter.ArticlesFromCategoryViewHolder> {
+    private static final String TAG = ArticlesListAdapter.class.getSimpleName();
     private List<Articles> mItems;
     private Context mContext;
 
-    public ArticlesFromCategoryAdapter(List<Articles> items, Context context){
+    public ArticlesListAdapter(List<Articles> items, Context context){
         mItems = items;
         mContext = new WeakReference<>(context).get();
     }
@@ -57,7 +57,9 @@ public class ArticlesFromCategoryAdapter
         Articles currentItem = mItems.get(position);
         holder.title.setText(currentItem.getTitle());
         holder.date.setText(currentItem.getPublishedAt());
-        holder.source.setText(currentItem.getSource().getName());
+        if (currentItem.getSource() != null) {
+            holder.source.setText(currentItem.getSource().getName());
+        }
         if (mContext != null) {
             UiTools.displayImageThumb(mContext, holder.image, currentItem.getUrlToImage(), 0.5f);
         } else {

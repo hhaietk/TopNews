@@ -6,13 +6,13 @@
     android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/category_rv_for_topicfragment"
+        android:id="@+id/category_rv_for_categoryfragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scrollbars="vertical" />
 
     <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmer_topic"
+        android:id="@+id/shimmer_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -20,7 +20,7 @@
         app:shimmer_auto_start="false"
         app:shimmer_duration="800">
 
-        <include layout="@layout/loading_shimmer_topic_fragment" />
+        <include layout="@layout/loading_shimmer_category_fragment" />
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 

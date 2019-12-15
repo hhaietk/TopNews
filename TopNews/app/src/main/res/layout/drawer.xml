@@ -45,14 +45,13 @@
             </RelativeLayout>
 
             <TextView
-                android:id="@+id/name"
+                android:id="@+id/name_drawer"
                 android:fontFamily="sans-serif-medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing_large"
                 android:background="@drawable/round_name_bg"
                 android:gravity="center"
-                android:text=""
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 android:textColor="@color/colorTextAction" />
 
@@ -88,7 +87,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/nav_menu_topic"
+                android:id="@+id/nav_menu_category"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spacing_xmlarge"
                 android:background="@drawable/selectable_bg_dark"
@@ -103,7 +102,7 @@
                     app:fontFamily="sans-serif-medium"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/title_menu_topic"
+                    android:text="@string/title_menu_category"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                     android:textColor="@color/grey_40" />
 
@@ -303,7 +302,7 @@
                     android:minHeight="@dimen/spacing_mxlarge"
                     android:paddingStart="@dimen/spacing_large"
                     android:paddingLeft="@dimen/spacing_large"
-                    android:text="@string/logout_title"
+                    android:text="@string/login_title"
                     android:textAppearance="@style/TextAppearance.AppCompat.Small"
                     android:textColor="@color/grey_40" />
 

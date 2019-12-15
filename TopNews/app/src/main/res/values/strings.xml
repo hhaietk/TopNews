@@ -53,7 +53,7 @@
     <string name="logout_title">Logout</string>
     <string name="login_title">Login</string>
     <string name="title_menu_home">Home</string>
-    <string name="title_menu_topic">Topic</string>
+    <string name="title_menu_category">Category</string>
     <string name="title_menu_notif">Notification</string>
     <string name="title_menu_saved">Saved</string>
     <string name="title_menu_more">More Apps</string>
@@ -64,15 +64,16 @@
     <string name="msg_no_internet">Please check your Internet connection and try again</string>
     <string name="title_info">Info</string>
     <string name="section_category">Category</string>
-    <string name="section_featured">Featured</string>
+    <string name="section_breaking_news">Breaking News</string>
     <string name="section_recent">Recent</string>
     <string name="news_type_gallery">Gallery</string>
     <string name="news_type_video">Video</string>
     <string name="news_type_article">Article</string>
+    <string name="log_out_message">You are logged out</string>
 
     <!--ActivityNewsDetails string data -->
-    <string name="remove_from_saved">News remove from Saved</string>
-    <string name="added_to_saved">News added to Saved</string>
+    <string name="remove_from_saved">Article removed from Saved</string>
+    <string name="added_to_saved">Article added to Saved</string>
     <string name="title_menu_refresh">Refresh</string>
 
     <!--ActivityNotification string data -->
@@ -222,7 +223,7 @@
     <string name="title_activity_choose_language">Choose language</string>
     <string name="choose_a_country">Choose a country:</string>
     <string name="searchview_hint">Enter text to search</string>
-    <string name="no_item">No Item</string>
+    <string name="no_results">No Results</string>
     <string name="please_enter_text">Please enter text to search</string>
 
 

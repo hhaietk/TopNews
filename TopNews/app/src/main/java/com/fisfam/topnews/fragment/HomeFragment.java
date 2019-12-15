@@ -18,24 +18,24 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.fisfam.topnews.ArticlesDetailsActivity;
-import com.fisfam.topnews.NewsService;
-import com.fisfam.topnews.NewsServiceGenerator;
 import com.fisfam.topnews.R;
 import com.fisfam.topnews.UserPreference;
 import com.fisfam.topnews.adapter.HomeAdapter;
+import com.fisfam.topnews.model.NewsModel;
 import com.fisfam.topnews.pojo.Articles;
 import com.fisfam.topnews.pojo.Category;
 import com.fisfam.topnews.pojo.CategoryList;
-import com.fisfam.topnews.pojo.News;
 import com.fisfam.topnews.pojo.Section;
 import com.fisfam.topnews.utils.NetworkCheck;
+import com.fisfam.topnews.viewmodel.NewsViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class HomeFragment extends Fragment {
 
@@ -53,17 +53,20 @@ public class HomeFragment extends Fragment {
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private ShimmerFrameLayout mShimmerFrameLayout;
     private HomeAdapter mHomeAdapter;
-    private Call<News> mCallNews;
     private UserPreference mUserPrefs;
+    private NewsViewModel mViewModel;
+    private CompositeDisposable mDisposables;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_home, container, false);
         mUserPrefs = new UserPreference(getActivity());
+        mViewModel = new NewsViewModel(new NewsModel());
+        mDisposables = new CompositeDisposable();
         initUiComponents();
-        showRefreshing(true);
-        requestData();
+        subscribeNews();
+        requestNews();
         return mRootView;
     }
 
@@ -80,6 +83,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        mDisposables.dispose();
     }
 
     private void initUiComponents() {
@@ -93,64 +97,47 @@ public class HomeFragment extends Fragment {
         mHomeAdapter = new HomeAdapter(getActivity());
         mHomeRecyclerView.setAdapter(mHomeAdapter);
 
-        mHomeAdapter.setOnItemClickListener((view, articles, position) -> {
-            ArticlesDetailsActivity.open(getActivity(), articles);
-        });
+        mHomeAdapter.setOnItemClickListener((view, articles, position)
+                -> ArticlesDetailsActivity.open(getActivity(), articles));
 
         mSwipeRefreshLayout.setOnRefreshListener(() -> {
-            if (mCallNews != null && mCallNews.isExecuted()) {
-                mCallNews.cancel();
-                mHomeAdapter.resetData();
-            }
-            requestData();
+            mHomeAdapter.resetData();
+            requestNews();
         });
     }
 
-    private void requestData() {
-        // Disable failed view if it was enabled from last request
-        showFailedView(false, "", R.drawable.img_failed);
+    private void subscribeNews() {
 
+        Disposable d = mViewModel.getArticlesObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(articles -> {
+                    mHomeAdapter.addData(new Section(getString(R.string.section_category)));
+                    mHomeAdapter.addData(new CategoryList(CATEGORY_LIST));
+                    mHomeAdapter.addData(new Section(getString(R.string.section_breaking_news)));
+                    for (final Articles a : articles) {
+                        mHomeAdapter.addData(a);
+                    }
+                    showRefreshing(false);
+                });
+
+        Disposable d2 = mViewModel.getErrorObservable()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(error -> {
+                            Log.e(TAG, "subscribeNews: error = " + error);
+                            handleFailRequest();
+                        });
+
+        mDisposables.addAll(d, d2);
+    }
+
+    private void requestNews() {
         showRefreshing(true);
-
-        NewsService newsService =
-                NewsServiceGenerator.createService(NewsService.class, getString(R.string.api_key));
-        mCallNews = newsService.getTopHeadlines(mUserPrefs.getCountryCode(),
-                null, null, null, 10, 0);
-
-        //TODO: move this request out of UI Thread
-        mCallNews.enqueue(new Callback<News>() {
-            @Override
-            public void onResponse(@Nullable Call<News> call, @NonNull Response<News> response) {
-                News news = response.body();
-
-                if (news == null) {
-                    Log.e(TAG, "onResponse: No news is good news");
-                    handleFailRequest();
-                    return;
-                }
-
-                mHomeAdapter.addData(new Section(getString(R.string.section_category)));
-                mHomeAdapter.addData(new CategoryList(CATEGORY_LIST));
-                // TODO: change Featured to "breaking news" and set up translation
-                mHomeAdapter.addData(new Section(getString(R.string.section_featured)));
-                for (final Articles articles : news.getArticles()) {
-                    mHomeAdapter.addData(articles);
-                }
-
-                showRefreshing(false);
-            }
-
-            @Override
-            public void onFailure(@Nullable Call<News> call, @NonNull Throwable t) {
-                Log.e(TAG, t.toString());
-                if (!call.isCanceled()) {
-                    handleFailRequest();
-                }
-            }
-        });
+        showFailedView(false, "", R.drawable.img_failed);
+        mViewModel.getNews(mUserPrefs.getCountryCode(), null, null, null, 50, 0);
     }
 
-    //TODO: maybe move handleFailRequest and showFailedView to UiTools
     private void handleFailRequest() {
         showRefreshing(false);
         if (NetworkCheck.isNetworkAvailable(getActivity())){
@@ -172,7 +159,7 @@ public class HomeFragment extends Fragment {
             mHomeRecyclerView.setVisibility(View.VISIBLE);
             lyt_failed.setVisibility(View.GONE);
         }
-        (mRootView.findViewById(R.id.failed_retry)).setOnClickListener(view -> requestData());
+        (mRootView.findViewById(R.id.failed_retry)).setOnClickListener(view -> requestNews());
     }
 
     private void showRefreshing(final boolean show) {

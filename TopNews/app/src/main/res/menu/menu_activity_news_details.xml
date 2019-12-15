@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/action_saved"
-        android:icon="@drawable/ic_bookmark_border"
+        android:icon="@drawable/ic_bookmark"
         android:orderInCategory="100"
         android:title="@string/title_menu_saved"
         app:showAsAction="always" />
