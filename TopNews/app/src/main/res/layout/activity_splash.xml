@@ -4,13 +4,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorBackground">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="80dp"
-        android:src="@drawable/long_signature"/>
-
-    <!--<LinearLayout
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -21,15 +15,38 @@
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
-            android:layout_marginBottom="@dimen/spacing_middle"
-            android:src="@drawable/baby" />
+            android:layout_marginBottom="@dimen/spacing_medium"
+            android:src="@drawable/logo" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="@dimen/spacing_xlarge"/>
+        <ProgressBar
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+
+    </LinearLayout>
+            <!--<LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="@dimen/spacing_xlarge"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_marginBottom="@dimen/spacing_middle"
+                    android:src="@drawable/baby" />
 
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="60dp"
-            android:src="@drawable/baby_text" />
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/baby_text" />
 
-    </LinearLayout>-->
+            </LinearLayout>-->
 
 </RelativeLayout>
