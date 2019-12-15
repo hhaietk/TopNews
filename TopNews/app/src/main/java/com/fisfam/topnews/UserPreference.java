@@ -59,10 +59,11 @@ public class UserPreference {
     public void setCountry(final String country) {
         mSharedPref.edit().putString("SETTINGS_COUNTRY", country).apply();
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        DocumentReference ref = firestore.collection("users").document(mAuth.getCurrentUser().getUid());
-
-        ref.update("country", country);
+        if (mAuth.getCurrentUser() != null) {
+            FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+            DocumentReference ref = firestore.collection("users").document(mAuth.getCurrentUser().getUid());
+            ref.update("country", country);
+        }
     }
 
     public String getCountry() {
